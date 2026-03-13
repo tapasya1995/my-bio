@@ -1,0 +1,2661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tapasya Pattnaik — Strategist. Builder. Dot Connector.</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#f0f4f8;
+  color:#1e1b16;
+  overflow-x:hidden;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  /* reserve space for fixed vertical nav on desktop */
+  padding-right: 0; /* set per breakpoint below */
+}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+
+:root{
+  --bg:#f0f4f8;
+  --bg2:#e8eef5;
+  --bg3:#dde6f0;
+  --card:#ffffff;
+  --ink:#0f1c2e;
+  --mid:#526070;
+  --muted:#8fa3b4;
+  --border:#cdd8e6;
+  --border2:#aec0d0;
+  --sage:#1a7a6e;
+  --sage-light:rgba(26,122,110,0.1);
+  --sage-border:rgba(26,122,110,0.22);
+  --terracotta:#2e6da4;
+  --tc-light:rgba(46,109,164,0.09);
+  --gold:#3b82c4;
+  --radius:14px;
+  --nav-h:62px;
+  --px:clamp(1.5rem,5.5vw,6rem);
+  --py:clamp(3.5rem,6vw,5.5rem);
+}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--nav-h);z-index:999;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 var(--px);
+  background:rgba(240,244,248,0.96);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(15,28,46,0.08);
+  transition:box-shadow 0.3s;
+}
+.nav.scrolled{box-shadow:0 2px 20px rgba(15,28,46,0.08);}
+.nav-logo{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.1rem;font-weight:700;
+  color:var(--ink);letter-spacing:0.01em;
+}
+.nav-logo span{color:var(--sage);}
+.nav-links{display:flex;align-items:center;gap:0.1rem;}
+.nav-links a{
+  font-size:0.73rem;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--mid);padding:0.38rem 0.8rem;
+  border-radius:7px;transition:all 0.2s;white-space:nowrap;
+}
+.nav-links a:hover{color:var(--ink);background:var(--bg2);}
+.nav-links a.act{color:var(--sage);font-weight:600;}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--ink)!important;color:#f4f1eb!important;
+  padding:0.42rem 1.1rem!important;border-radius:7px;
+  font-weight:600!important;font-size:0.72rem!important;
+  letter-spacing:0.05em!important;
+  transition:all 0.2s!important;
+}
+.nav-cta:hover{background:var(--sage)!important;transform:translateY(-1px)!important;}
+.hbg{
+  display:none;flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:4px;
+}
+.hbg span{display:block;width:20px;height:1.5px;background:var(--mid);border-radius:2px;transition:all 0.3s;}
+.mob{
+  display:none;position:fixed;
+  top:var(--nav-h);left:0;right:0;
+  background:rgba(235,241,248,0.99);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  flex-direction:column;
+  padding:0.75rem 1.5rem 1.25rem;
+  gap:0;z-index:998;
+  visibility:hidden;
+  box-shadow:0 8px 24px rgba(15,28,46,0.08);
+}
+.mob.open{display:flex;visibility:visible;}
+.mob a{
+  font-size:0.82rem;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--mid);
+  padding:0.75rem 0;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s;
+}
+.mob a:last-child{border:none;color:var(--sage);}
+.mob a:hover{color:var(--sage);}
+.mob a{
+  font-size:0.83rem;font-weight:500;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--mid);padding:0.65rem 0;
+  border-bottom:1px solid var(--border);transition:color 0.2s;
+}
+.mob a:last-child{border:none;}
+.mob a:hover{color:var(--sage);}
+
+/* ── VERTICAL NAV ── */
+/* ── RIGHT RAIL: single fixed unit containing vnav + dock ── */
+/* Desktop only — reserves space for 190px right rail */
+@media(min-width:1201px){
+  body{ padding-right: 130px; }
+}
+
+.right-rail {
+  position: fixed;
+  right: 0;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-height: calc(100vh - 4rem);
+  overflow: visible;
+  /* explicit width so rail never bleeds into content */
+  width: 130px;
+  /* subtle frosted background so labels are legible over any section */
+  background: linear-gradient(to left, rgba(240,244,248,0.96) 75%, transparent 100%);
+}
+
+.vnav{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:0;
+  /* positioning handled by .right-rail wrapper */
+}
+.vn{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  cursor:pointer;
+  padding:6px 18px 6px 24px;
+  transition:background 0.2s;
+  position:relative;
+  border:none;
+  background:none;
+}
+.vn:hover{
+  background:rgba(15,28,46,0.04);
+}
+.vn:hover .vn-lbl{
+  color:var(--ink);
+  opacity:1;
+}
+/* Active section — full contrast, sage accent */
+.vn.act{
+  background:rgba(26,122,110,0.06);
+  border-radius:6px 0 0 6px;
+}
+.vn.act::after{
+  content:'';
+  position:absolute;
+  right:0;top:15%;bottom:15%;
+  width:2.5px;
+  background:var(--sage);
+  border-radius:2px 0 0 2px;
+}
+.vn-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  /* Inactive: readable mid-grey, not invisible */
+  color:var(--mid);
+  opacity:0.65;
+  white-space:nowrap;
+  transition:color 0.2s, opacity 0.2s, font-weight 0.2s;
+  user-select:none;
+  display:block;
+}
+/* Active label: full contrast sage */
+.vn.act .vn-lbl{
+  color:var(--sage);
+  font-weight:700;
+  opacity:1;
+  letter-spacing:0.08em;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  padding-top:var(--nav-h);
+  display:grid;
+  grid-template-columns:1fr 400px;
+  position:relative;overflow:hidden;
+  /* starts pure white at top, fades into cool bg — feels premium,
+     distinct from nav and flows naturally into dark About section */
+  background:linear-gradient(
+    170deg,
+    #ffffff 0%,
+    #f5f8fc 40%,
+    var(--bg2) 100%
+  );
+}
+/* Subtle grain texture */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  opacity:0.3;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+.hero-l{
+  padding:3.5rem var(--px) 3rem clamp(1.5rem,5.5vw,6rem);
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:1;
+}
+.hero-r{
+  background:linear-gradient(160deg,var(--bg2) 0%,var(--bg3) 100%);
+  border-left:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  padding:2rem 1.75rem;position:relative;z-index:1;
+}
+
+/* Sage accent line at bottom of hero — ties into brand colour */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:var(--px);right:var(--px);
+  height:1px;
+  background:linear-gradient(90deg, var(--sage) 0%, transparent 60%);
+  opacity:0.4;
+  z-index:2;
+  pointer-events:none;
+}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.68rem;color:var(--mid);
+  letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:2rem;
+  animation:fu 0.5s ease 0.1s both;
+}
+.hero-tag::before{content:'';width:22px;height:1px;background:var(--muted);}
+.hero-h1{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(3rem,5.2vw,5rem);
+  font-weight:700;line-height:1.0;
+  letter-spacing:-0.015em;
+  color:var(--ink);margin-bottom:0.4rem;
+  animation:fu 0.6s ease 0.2s both;
+}
+.hero-h1 em{font-style:italic;color:var(--sage);font-weight:400;}
+.hero-byline{
+  font-size:clamp(1rem,1.5vw,1.12rem);
+  font-weight:300;line-height:1.85;
+  color:#3d5166;max-width:500px;
+  margin-top:1.5rem;margin-bottom:2.5rem;
+  animation:fu 0.6s ease 0.35s both;
+}
+.hero-byline strong{color:var(--ink);font-weight:600;}
+
+/* tagline chips */
+.hero-chips{
+  display:flex;gap:0.5rem;flex-wrap:wrap;
+  margin-bottom:2.5rem;
+  animation:fu 0.6s ease 0.45s both;
+}
+.hchip{
+  font-size:0.72rem;font-weight:600;
+  padding:5px 13px;border-radius:100px;
+  background:var(--card);color:var(--mid);
+  border:1px solid var(--border);letter-spacing:0.03em;
+}
+.hchip.sage{background:var(--sage-light);color:var(--sage);border-color:var(--sage-border);}
+
+.hero-btns{
+  display:none; /* removed — dock handles all primary actions */
+}
+.btn-ink{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--ink);color:#f4f1eb;
+  padding:0.78rem 1.75rem;border-radius:9px;
+  font-weight:600;font-size:0.85rem;
+  transition:all 0.2s;
+}
+.btn-ink:hover{background:var(--sage);transform:translateY(-2px);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1.5px solid var(--border2);color:var(--ink);
+  padding:0.78rem 1.75rem;border-radius:9px;
+  font-weight:500;font-size:0.85rem;
+  background:transparent;
+  transition:all 0.2s;
+}
+.btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);}
+
+/* Glancebox */
+.gbox{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.75rem 1.5rem;width:100%;
+  box-shadow:0 4px 32px rgba(15,28,46,0.07);
+  animation:fu 0.7s ease 0.4s both;
+}
+.gbox-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);
+  padding-bottom:1rem;margin-bottom:1.25rem;
+  border-bottom:1px solid var(--border);
+}
+.gstat{margin-bottom:1rem;}
+.gstat:last-of-type{margin-bottom:0;}
+.gnum{
+  font-family:'Libre Baskerville',serif;
+  font-size:2.6rem;font-weight:700;
+  line-height:1;color:var(--sage);
+}
+.gdesc{font-size:0.75rem;color:var(--mid);line-height:1.55;margin-top:4px;}
+.gdiv{height:1px;background:var(--border);margin:1rem 0;}
+.gtags{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-top:1rem;padding-top:1rem;
+  border-top:1px solid var(--border);
+}
+.gtag{
+  font-size:0.66rem;font-weight:500;
+  padding:3px 10px;border-radius:100px;
+  background:var(--bg2);color:var(--mid);
+  border:1px solid var(--border);
+}
+
+@keyframes fu{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SHARED ── */
+.section{padding:var(--py) var(--px);border-top:1px solid var(--border);}
+.ey{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.63rem;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);
+  display:block;margin-bottom:0.6rem;
+}
+.sh2{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(1.9rem,3.5vw,2.8rem);
+  font-weight:700;line-height:1.1;
+  color:var(--ink);margin-bottom:1.75rem;
+}
+.sh2 em{font-style:italic;color:var(--sage);font-weight:400;}
+
+/* ── ABOUT ── */
+.about-s{background:var(--ink);}  /* dark — intentional contrast after light hero */
+.about-s .ey{color:rgba(255,255,255,0.35);}
+.about-s .sh2{color:#f0f4f8;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;}
+.about-p{font-size:0.98rem;line-height:1.92;color:rgba(255,255,255,0.65);font-weight:300;}
+.about-p+.about-p{margin-top:1.1rem;}
+.about-p strong{color:#b8e832;font-weight:600;}
+.about-p a{color:var(--sage);text-decoration:underline;text-underline-offset:3px;}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;}
+.tl-row{display:grid;grid-template-columns:14px 1fr;gap:1rem;padding-bottom:1.75rem;}
+.tl-row:last-child{padding-bottom:0;}
+.tl-col{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.tl-line{width:1px;flex:1;background:var(--border);margin-top:7px;min-height:18px;}
+.tl-row:last-child .tl-line{display:none;}
+.tl-i h4{font-weight:600;font-size:0.87rem;color:var(--ink);line-height:1.4;}
+.tl-i p{font-size:0.76rem;color:var(--mid);margin-top:2px;line-height:1.5;}
+.tl-i time{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--sage);margin-top:4px;display:block;}
+
+/* ── THINKING (replaces WHY section) ── */
+.thinking-s{background:var(--bg);}
+.thinking-intro{
+  font-size:1.05rem;line-height:1.9;
+  color:#3d5166;max-width:680px;
+  margin-bottom:3rem;font-weight:300;
+}
+.thinking-intro strong{color:var(--ink);font-weight:600;}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.tcard{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.75rem;
+  transition:all 0.25s;position:relative;overflow:hidden;
+}
+.tcard::after{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:3px;
+  background:var(--sage);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform 0.35s;
+}
+.tcard:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(15,28,46,0.07);}
+.tcard:hover::after{transform:scaleY(1);}
+.tcard-icon{font-size:1.5rem;margin-bottom:0.85rem;}
+.tcard h4{
+  font-family:'Libre Baskerville',serif;
+  font-size:1rem;font-weight:700;
+  color:var(--ink);margin-bottom:0.5rem;
+}
+.tcard p{font-size:0.8rem;line-height:1.72;color:var(--mid);}
+
+/* ── CONCEPT ── */
+.concept-s{background:var(--bg2);}
+.cpill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--sage-light);
+  border:1px solid var(--sage-border);
+  color:var(--sage);padding:4px 12px;border-radius:100px;
+  font-size:0.65rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem;
+}
+.cbox{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:0 6px 40px rgba(15,28,46,0.08);
+}
+.cbox-head{
+  background:var(--ink);padding:1.75rem 2rem;
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:2rem;flex-wrap:wrap;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.cbox-head h3{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.6rem;color:#f4f1eb;margin-bottom:0.4rem;
+}
+.cbox-head h3 em{font-style:italic;color:#7dd3c8;font-weight:400;}
+.cbox-head p{font-size:0.79rem;color:rgba(244,241,235,0.5);max-width:440px;line-height:1.65;}
+.cbadge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(61,107,94,0.25);
+  border:1px solid rgba(61,107,94,0.4);
+  color:#7dd3c8;padding:6px 14px;border-radius:7px;
+  font-size:0.68rem;font-weight:700;white-space:nowrap;
+}
+.cbox-body{
+  padding:2rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;
+}
+.ccol h4{
+  font-family:'Libre Baskerville',serif;
+  font-size:0.98rem;color:var(--ink);margin-bottom:0.85rem;
+}
+.ccol p{font-size:0.81rem;line-height:1.78;color:var(--mid);margin-bottom:0.85rem;}
+.cc-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.5rem;}
+.cc-pill{
+  font-size:0.67rem;font-weight:600;
+  padding:3px 10px;border-radius:100px;
+  background:var(--sage-light);color:var(--sage);
+  border:1px solid var(--sage-border);
+}
+.cflow{display:flex;flex-direction:column;gap:0.9rem;}
+.cstep{display:flex;align-items:flex-start;gap:0.85rem;}
+.cnum{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--sage);color:#fff;
+  font-size:0.65rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+.cstep-t h5{font-size:0.79rem;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.cstep-t p{font-size:0.73rem;color:var(--mid);line-height:1.55;}
+.cimpact{
+  grid-column:1/-1;
+  background:var(--bg3);border-radius:10px;
+  padding:1.5rem 2rem;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;border:1px solid var(--border);
+}
+.ci-item{text-align:center;}
+.ci-num{
+  font-family:'Libre Baskerville',serif;
+  font-size:2rem;font-weight:700;color:var(--sage);
+}
+.ci-lbl{font-size:0.69rem;color:var(--mid);margin-top:3px;}
+
+/* ── CAPABILITIES ── */
+.caps-s{background:var(--bg);}
+.caps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.cap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.75rem;
+  transition:all 0.25s;
+}
+.cap:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(15,28,46,0.07);border-color:var(--border2);}
+.cap-n{
+  font-family:'Libre Baskerville',serif;
+  font-size:2.6rem;font-weight:700;
+  line-height:1;color:var(--border);margin-bottom:0.6rem;
+}
+.cap h3{font-weight:600;font-size:0.9rem;color:var(--ink);margin-bottom:0.5rem;}
+.cap p{font-size:0.79rem;line-height:1.72;color:var(--mid);}
+.cap-tools{
+  display:flex;flex-wrap:wrap;gap:5px;
+  margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);
+}
+.ct{
+  font-size:0.64rem;font-weight:500;
+  background:var(--bg2);color:var(--mid);
+  padding:3px 9px;border-radius:5px;
+  border:1px solid var(--border);
+}
+
+/* ── WORK ── */
+.work-s{background:var(--bg2);}
+
+/* Project grid — 3 col desktop */
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+}
+
+/* Card */
+.proj-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.5rem;
+  display:flex;flex-direction:column;gap:0.8rem;
+  cursor:pointer;
+  transition:transform 0.2s cubic-bezier(.22,1,.36,1),box-shadow 0.2s,border-color 0.2s;
+  position:relative;overflow:hidden;
+  user-select:none;
+}
+.proj-card::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--sage),var(--gold));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s ease;
+}
+.proj-card:hover,.proj-card.active{
+  transform:translateY(-3px);
+  box-shadow:0 10px 32px rgba(15,28,46,0.09);
+  border-color:var(--border2);
+}
+.proj-card.active::after,.proj-card:hover::after{transform:scaleX(1);}
+
+/* Icon */
+.proj-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--sage-light);border:1px solid var(--sage-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+
+/* Title */
+.proj-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:0.95rem;font-weight:700;
+  color:var(--ink);line-height:1.3;
+}
+
+/* One-liner */
+.proj-desc{
+  font-size:0.78rem;line-height:1.65;
+  color:var(--mid);
+}
+
+/* Tags */
+.proj-tags{
+  display:flex;flex-wrap:wrap;gap:4px;
+  margin-top:auto;padding-top:0.7rem;
+  border-top:1px solid var(--border);
+}
+.proj-tag{
+  font-size:0.6rem;font-weight:600;
+  padding:2px 8px;border-radius:100px;
+  background:var(--bg2);color:var(--mid);
+  border:1px solid var(--border);
+}
+.proj-tag.accent{
+  background:var(--sage-light);
+  color:var(--sage);border-color:var(--sage-border);
+}
+
+/* Hint */
+.proj-hint{
+  font-size:0.6rem;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.06em;margin-top:0.2rem;
+}
+
+/* Expand panel */
+.proj-expand{
+  display:none;
+  grid-column:1/-1;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2rem;
+  animation:fadeUp 0.25s ease both;
+}
+.proj-expand.open{display:block;}
+.proj-expand-head{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:1rem;
+  margin-bottom:1.25rem;
+}
+.proj-expand-head h4{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.15rem;font-weight:700;
+  color:var(--ink);
+}
+.proj-expand-close{
+  background:none;border:none;cursor:pointer;
+  font-size:1rem;color:var(--muted);
+  padding:4px 8px;border-radius:6px;
+  transition:all 0.15s;flex-shrink:0;
+}
+.proj-expand-close:hover{color:var(--ink);background:var(--bg2);}
+.proj-expand-body{
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;
+}
+.proj-expand-col p{
+  font-size:0.82rem;line-height:1.78;
+  color:var(--mid);margin-bottom:0.75rem;
+}
+.proj-expand-col ul{list-style:none;display:flex;flex-direction:column;gap:0.35rem;}
+.proj-expand-col li{
+  font-size:0.8rem;color:var(--mid);line-height:1.6;
+  display:flex;gap:0.5rem;align-items:flex-start;
+}
+.proj-expand-col li::before{
+  content:'→';color:var(--sage);font-weight:700;flex-shrink:0;
+}
+.proj-outcome{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.7rem;font-weight:700;
+  padding:4px 11px;border-radius:6px;
+  background:var(--sage-light);color:var(--sage);
+  border:1px solid var(--sage-border);margin-top:1rem;
+}
+
+.edge-s{background:var(--bg3);}
+.edge-intro{font-size:0.95rem;line-height:1.82;color:var(--mid);max-width:520px;margin-bottom:2.5rem;}
+.edge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.ec{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.6rem;
+  transition:all 0.25s;
+}
+.ec:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(15,28,46,0.07);border-color:var(--border2);}
+.ec-n{
+  font-family:'Libre Baskerville',serif;
+  font-size:2rem;font-weight:700;
+  color:var(--border);line-height:1;margin-bottom:0.6rem;
+}
+.ec h4{font-weight:600;font-size:0.88rem;color:var(--ink);margin-bottom:0.4rem;}
+.ec p{font-size:0.77rem;line-height:1.65;color:var(--mid);}
+
+/* marquee */
+.mwrap{
+  margin-top:3rem;
+  overflow:hidden;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  /* prevent width overflow on mobile */
+  max-width:100%;
+}
+.mtrack{display:flex;gap:10px;width:max-content;animation:mq 32s linear infinite;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.mchip{
+  display:inline-flex;align-items:center;gap:7px;
+  white-space:nowrap;padding:8px 16px;
+  border:1px solid var(--border);border-radius:100px;
+  font-size:0.72rem;color:var(--mid);
+  font-weight:500;flex-shrink:0;background:var(--card);
+}
+.mchip .dot{width:5px;height:5px;background:var(--sage);border-radius:50%;flex-shrink:0;}
+
+/* ── AWARDS ── */
+.awards-s{background:var(--bg);}
+.awards-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.85rem;}
+.aw{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.35rem 1.1rem;
+  display:flex;flex-direction:column;gap:0.5rem;
+  transition:all 0.22s;
+}
+.aw:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(15,28,46,0.07);}
+.aw-ic{font-size:1.2rem;}
+.aw h4{font-weight:600;font-size:0.8rem;line-height:1.3;color:var(--ink);}
+.aw p{font-size:0.7rem;color:var(--mid);line-height:1.5;}
+.aw-org{font-family:'JetBrains Mono',monospace;font-size:0.57rem;color:var(--muted);margin-top:auto;}
+
+/* ── CONTACT ── */
+.contact-s{
+  background:var(--bg2);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3.5rem;align-items:center;
+  padding:var(--py) var(--px);
+  border-top:1px solid var(--border);
+}
+.contact-tagline{
+  font-size:0.93rem;line-height:1.8;
+  color:var(--mid);margin-top:0.85rem;
+  max-width:360px;font-weight:300;
+}
+.crows{display:flex;flex-direction:column;gap:0.65rem;}
+.crow{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.3rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);transition:all 0.2s;color:var(--ink);
+}
+.crow:hover{border-color:var(--sage-border);transform:translateX(4px);}
+.crow-i{font-size:0.95rem;flex-shrink:0;}
+.crow-t{display:flex;flex-direction:column;gap:2px;}
+.crow-lbl{font-size:0.59rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;}
+.crow-val{font-size:0.82rem;font-weight:600;color:var(--ink);}
+.crow-arr{margin-left:auto;color:var(--muted);font-size:0.8rem;}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);text-align:center;
+  padding:1.25rem var(--px);
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.61rem;color:rgba(244,241,235,0.25);
+}
+footer span{color:#7dd3c8;}
+
+/* ── CONCEPT TEASER ── */
+.concept-teaser{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2rem 2.5rem;
+  box-shadow:0 4px 24px rgba(15,28,46,0.05);
+}
+.ct-inner{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  gap:2rem;flex-wrap:wrap;
+}
+.ct-name{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.6rem;font-weight:700;
+  color:var(--ink);margin-bottom:0.5rem;
+}
+.ct-name em{font-style:italic;color:var(--sage);font-weight:400;}
+.ct-desc{font-size:0.88rem;line-height:1.72;color:var(--mid);max-width:420px;}
+.ct-right{flex-shrink:0;}
+.ct-toggle{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--ink);color:#f4f1eb;
+  padding:0.85rem 1.6rem;border-radius:9px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:600;font-size:0.85rem;
+  border:none;cursor:pointer;
+  transition:all 0.25s;white-space:nowrap;
+}
+.ct-toggle:hover{background:var(--sage);transform:translateY(-2px);}
+.ct-toggle.open{background:var(--sage);}
+.ct-arrow{
+  font-size:1rem;
+  transition:transform 0.3s ease;
+  display:inline-block;
+}
+.ct-toggle.open .ct-arrow{transform:rotate(180deg);}
+
+/* ── TESTIMONIALS ── */
+.testimonials-s{background:var(--bg3);border-top:1px solid var(--border);}
+.testi-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.25rem;
+  margin-top:0;
+}
+.testi-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.6rem 1.5rem;
+  display:flex;flex-direction:column;
+  gap:1rem;
+  transition:all 0.25s;
+  position:relative;
+}
+.testi-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(15,28,46,0.08);}
+.testi-quote-mark{
+  font-family:'Libre Baskerville',serif;
+  font-size:3.5rem;line-height:0.6;
+  color:var(--sage);opacity:0.25;
+  font-weight:700;
+  display:block;
+  margin-bottom:0.5rem;
+}
+.testi-text{
+  font-size:0.88rem;
+  line-height:1.82;
+  color:#3d5166;
+  font-style:italic;
+  font-weight:300;
+  flex:1;
+}
+.testi-text strong{
+  font-style:normal;
+  font-weight:600;
+  color:var(--ink);
+}
+.testi-footer{
+  display:flex;align-items:center;gap:0.85rem;
+  padding-top:1.1rem;
+  border-top:1px solid var(--border);
+}
+.testi-avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--sage-light);
+  border:1px solid var(--sage-border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Libre Baskerville',serif;
+  font-size:0.85rem;font-weight:700;
+  color:var(--sage);flex-shrink:0;
+}
+.testi-meta h5{
+  font-weight:700;font-size:0.82rem;
+  color:var(--ink);margin-bottom:1px;
+}
+.testi-meta p{
+  font-size:0.7rem;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.04em;
+}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.65s cubic-bezier(.22,1,.36,1),transform 0.65s cubic-bezier(.22,1,.36,1);}
+.reveal.in{opacity:1;transform:none;}
+.d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}
+
+/* ── RESPONSIVE ── */
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE — full mobile-first rework
+══════════════════════════════════════════════ */
+
+/* ── Tablet: 768–1100px ── */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr 300px;}
+  .caps-grid{grid-template-columns:1fr 1fr;}
+  .awards-grid{grid-template-columns:repeat(3,1fr);}
+}
+
+/* ── Mobile landscape / small tablet: ≤860px ── */
+@media(max-width:860px){
+  /* Nav */
+  .nav-links{display:none;}
+  .hbg{display:flex;}
+  /* Hide Say Hello from nav on mobile — dock handles actions */
+  .nav-cta{display:none;}
+  /* Ensure logo and hamburger have correct spacing */
+  .nav{padding:0 1.25rem;}
+
+  /* Body: remove desktop right-rail padding */
+  body{padding-right:0 !important;}
+
+  /* Hero: single column, generous top padding */
+  .hero{
+    grid-template-columns:1fr;
+    min-height:auto;
+    padding-top:var(--nav-h);
+  }
+  .hero-l{
+    padding:2.5rem 1.5rem 2rem;
+    order:1;
+  }
+  .hero-r{
+    border-left:none;
+    border-top:1px solid var(--border);
+    padding:1.25rem 1.25rem 1.5rem;
+    order:2;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    background:var(--bg2);
+    width:100%;
+    box-sizing:border-box;
+  }
+  /* Hero buttons replaced by dock on mobile */
+  .hero-btns{display:none;}
+
+  /* Gbox: 3 equal stat columns, no overflow */
+  .gbox{
+    width:100%;
+    padding:0;
+    border:none;
+    box-shadow:none;
+    background:transparent;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:auto auto;
+    gap:0;
+    box-sizing:border-box;
+  }
+  .gbox-lbl{display:none;}
+
+  /* Each stat cell */
+  .gstat{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:0.75rem 0.4rem;
+    border-right:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    margin-bottom:0;
+    min-width:0; /* prevent overflow */
+    overflow:hidden;
+  }
+  .gstat:nth-child(3){border-right:none;}
+  .gstat:last-of-type{
+    border-right:none;
+    border-bottom:none;
+  }
+  .gdiv{display:none;}
+
+  /* Stat number — big but contained */
+  .gnum{
+    font-size:1.75rem;
+    line-height:1;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  /* Stat description — small, centered, wraps gracefully */
+  .gdesc{
+    font-size:0.6rem;
+    line-height:1.4;
+    text-align:center;
+    color:var(--muted);
+    margin-top:4px;
+    word-break:break-word;
+    overflow-wrap:break-word;
+    max-width:100%;
+    padding:0 2px;
+  }
+
+  /* Tags row — spans all 3 columns */
+  .gtags{
+    grid-column:1 / -1;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    padding:0.75rem 0 0;
+    border-top:none;
+    margin-top:0;
+    width:100%;
+  }
+  .gtag{
+    font-size:0.66rem;
+    padding:3px 10px;
+    white-space:nowrap;
+  }
+
+  /* Video card full width */
+  .video-card{
+    width:100%;
+    margin-top:0.85rem;
+    background:var(--ink);
+    box-sizing:border-box;
+    flex-shrink:0;
+  }
+
+  /* Sections: tighter padding */
+  .section{padding:3rem 1.5rem;}
+  .contact-s{padding:3rem 1.5rem;}
+  .sh2{margin-bottom:1.5rem;}
+
+  /* About */
+  .about-grid{grid-template-columns:1fr;gap:2rem;}
+
+  /* Projects */
+  .proj-grid{grid-template-columns:1fr 1fr;}
+  .proj-expand-body{grid-template-columns:1fr;}
+
+  /* Capabilities */
+  .caps-grid{grid-template-columns:1fr 1fr;}
+
+  /* Work */
+  .work-grid{grid-template-columns:1fr;}
+  .work-card{padding:1.5rem 1.25rem;}
+  .work-lens{padding:0.85rem;}
+
+  /* Edge */
+  .edge-grid{grid-template-columns:1fr 1fr;}
+
+  /* Deep dive concept */
+  .cbox-body{grid-template-columns:1fr;}
+  .cimpact{grid-template-columns:1fr 1fr;}
+  .dd-header{padding:1.25rem 1.5rem;gap:1rem;}
+  .dd-toggle-btn{width:100%;justify-content:center;}
+  .dd-inner-section{padding:1.5rem 1.5rem 0.5rem;}
+
+  /* Testimonials */
+  .testi-grid{grid-template-columns:1fr;}
+
+  /* Contact */
+  .contact-s{grid-template-columns:1fr;gap:2rem;}
+
+  /* Marquee: slow down slightly */
+  .mtrack{animation-duration:20s;}
+
+  /* Bottom padding so dock bar never covers content */
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom));}
+}
+
+/* ── Mobile portrait: ≤600px ── */
+@media(max-width:600px){
+  /* Typography scale down */
+  .hero-h1{font-size:2.6rem;line-height:1.0;}
+  .sh2{font-size:1.75rem;}
+  .hero-byline{font-size:0.95rem;}
+
+  /* Nav logo smaller */
+  .nav-logo{font-size:1rem;}
+
+  /* Hero chips — 2 per row on small screens */
+  .hero-chips{
+    gap:0.4rem;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .hchip{
+    font-size:0.68rem;
+    padding:5px 10px;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* Sections tighter */
+  .section{padding:2.5rem 1.25rem;}
+  .contact-s{padding:2.5rem 1.25rem;}
+  .eyebrow-section,.ey{margin-bottom:0.4rem;}
+
+  /* Single column everything */
+  .tgrid{grid-template-columns:1fr;}
+  .proj-grid{grid-template-columns:1fr;}
+  .proj-expand{padding:1.25rem;}
+  .proj-expand-body{grid-template-columns:1fr;}
+  .caps-grid{grid-template-columns:1fr;}
+  .edge-grid{grid-template-columns:1fr;}
+  .cases-grid{grid-template-columns:1fr;}
+  .awards-grid{grid-template-columns:1fr 1fr;}
+  .cimpact{grid-template-columns:1fr;}
+
+  /* Cards */
+  .cap{padding:1.4rem;}
+  .tcard{padding:1.4rem;}
+  .ec{padding:1.4rem;}
+  .case{padding:1.5rem 1.25rem;}
+  .aw{padding:1.1rem;}
+
+  /* Timeline compact */
+  .tl-row{padding-bottom:1.25rem;}
+
+  /* Concept deep dive */
+  .cbox-head{padding:1.25rem;}
+  .cbox-body{padding:1.25rem;gap:1.5rem;}
+  .dd-header-left h3{font-size:1rem;}
+
+  /* Contact rows */
+  .crow{padding:0.9rem 1rem;}
+  .crow-val{font-size:0.78rem;}
+
+  /* Footer */
+  footer{font-size:0.58rem;padding:1rem 1.25rem;}
+
+  /* Add bottom padding so dock doesn't cover last section */
+  body{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom));}
+
+  /* Contact rows full width */
+  .crow-val{font-size:0.75rem;word-break:break-all;}
+  .c-arr{display:none;}
+
+  /* Section eyebrow smaller */
+  .ey{font-size:0.6rem;}
+
+  /* Tighten timeline */
+  .tl-i h4{font-size:0.83rem;}
+  .tl-i p{font-size:0.73rem;}
+
+  /* Deep dive header stacks */
+  .dd-header{flex-direction:column;align-items:flex-start;}
+  .dd-toggle-btn{width:100%;justify-content:center;margin-top:0.5rem;}
+
+  /* Concept impact 1-col on small screens */
+  .cimpact{padding:1rem;}
+  .ci-num{font-size:1.6rem;}
+
+  /* Testimonial cards */
+  .testi-card{padding:1.4rem 1.25rem;}
+  .testi-text{font-size:0.84rem;}
+}
+
+/* ── Very small: ≤400px ── */
+@media(max-width:400px){
+  .hero-h1{font-size:2.2rem;}
+  .awards-grid{grid-template-columns:1fr;}
+  .hero-chips{gap:0.3rem;}
+  .hchip{font-size:0.62rem;padding:3px 9px;}
+  .section{padding:2rem 1rem;}
+}
+
+
+/* ═══════════════════════════════════════════════════
+   ACTION DOCK  –  Option B: Condensed + expandable
+   Desktop: right-rail below vnav, viewport-safe
+   Mobile:  bottom pill bar, safe-area aware
+═══════════════════════════════════════════════════ */
+
+/* ── Shared tokens ── */
+:root {
+  --dock-accent:   #1a7a6e;
+  --dock-accent-h: #15695e;
+  --dock-bg:       rgba(255,255,255,0.94);
+  --dock-border:   rgba(15,28,46,0.10);
+  --dock-ink:      #0f1c2e;
+  --dock-muted:    rgba(15,28,46,0.45);
+  --dock-radius:   50%;
+  --dock-size:     44px;
+  --dock-gap:      8px;
+  --dock-easing:   cubic-bezier(.22,1,.36,1);
+}
+
+/* ══════════════════════════════
+   DESKTOP  ≥ 769px
+══════════════════════════════ */
+.action-dock {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  overflow: visible;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  /* match rail width so background aligns */
+  width: 130px;
+  background: linear-gradient(to left, rgba(240,244,248,0.96) 75%, transparent 100%);
+}
+
+/* Each item row */
+.dock-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Circular button */
+.dock-btn {
+  width: var(--dock-size);
+  height: var(--dock-size);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  /* Visible by default — not hidden until hovered */
+  border: 1.5px solid var(--border2);
+  background: var(--card);
+  color: var(--mid);
+  opacity: 1;
+  margin: 4px 18px 4px 0;
+  outline: none;
+  transition:
+    transform    0.15s cubic-bezier(.22,1,.36,1),
+    box-shadow   0.15s ease,
+    background   0.15s ease,
+    border-color 0.15s ease,
+    color        0.15s ease;
+  box-shadow: 0 1px 4px rgba(15,28,46,0.08), 0 0 0 0 rgba(26,122,110,0);
+}
+.dock-btn svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+/* focus ring */
+.dock-btn:focus-visible {
+  outline: 2px solid var(--dock-accent);
+  outline-offset: 3px;
+}
+/* hover */
+.dock-btn:hover {
+  color: var(--dock-accent);
+  border-color: var(--dock-accent);
+  background: var(--card);
+  transform: scale(1.08) translateY(-1px);
+  box-shadow:
+    0 6px 16px rgba(26,122,110,0.18),
+    0 0 0 3px rgba(26,122,110,0.08);
+}
+/* PRESS — clear tactile feel */
+.dock-btn:active {
+  transform: scale(0.91) translateY(1px);
+  background: rgba(26,122,110,0.08);
+  border-color: var(--dock-accent);
+  color: var(--dock-accent);
+  box-shadow: 0 1px 3px rgba(26,122,110,0.12), 0 0 0 2px rgba(26,122,110,0.15);
+  transition-duration: 0.07s;
+}
+/* accent right-edge bar (mirrors vnav active style) */
+.dock-item::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%; bottom: 20%;
+  width: 2.5px;
+  background: var(--dock-accent);
+  border-radius: 2px 0 0 2px;
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: opacity 0.17s ease, transform 0.2s var(--dock-easing);
+}
+.dock-item:hover::after {
+  opacity: 1;
+  transform: scaleY(1);
+}
+/* copy-success state */
+.dock-btn.success {
+  background: var(--dock-accent);
+  border-color: var(--dock-accent);
+  color: white;
+  opacity: 1;
+}
+
+/* ── Tooltip (left of button) ── */
+.dock-tooltip {
+  position: absolute;
+  right: calc(100% + 10px);  /* 10px gap from button left edge */
+  top: 50%;
+  transform: translateY(-50%) translateX(5px);
+  background: var(--dock-ink);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 5px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.13s ease, transform 0.13s ease;
+  box-shadow: 0 2px 8px rgba(15,28,46,0.18);
+  /* don't obscure scrollbar */
+  max-width: 130px;
+}
+.dock-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-left-color: var(--dock-ink);
+  border-right: none;
+}
+.dock-item:hover .dock-tooltip,
+.dock-btn:focus-visible ~ .dock-tooltip,
+.dock-item.tip-visible .dock-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ── Toast ── */
+.dock-toast {
+  position: fixed;
+  right: 72px;
+  bottom: 1.5rem;
+  background: var(--dock-ink);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 100px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+  z-index: 700;
+  white-space: nowrap;
+  box-shadow: 0 3px 14px rgba(15,28,46,0.16);
+}
+.dock-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════
+   HIDE desktop dock ≤ 1200px
+   (vnav also hidden here)
+══════════════════════════════ */
+
+
+/* ══════════════════════════════
+   MOBILE PILL BAR  ≤ 768px
+══════════════════════════════ */
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .right-rail  { display: none; }
+  /* dock hidden between 860-1200; below 860 mobile CSS re-enables it */
+  .action-dock { display: none; }
+  body { padding-right: 0 !important; } /* right-rail hidden, no padding needed */
+}
+
+@media (max-width: 860px) {
+  .right-rail { display: none; }
+
+  /* ── Mobile dock: full-width bottom tab bar ── */
+  .action-dock {
+    /* reset ALL desktop values */
+    display: flex !important;
+    position: fixed !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    /* layout */
+    flex-direction: row !important;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    /* style */
+    background: rgba(255,255,255,0.97) !important;
+    backdrop-filter: blur(24px) saturate(1.8);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    border-top: 1px solid rgba(15,28,46,0.08) !important;
+    border-radius: 0 !important;
+    padding: 6px 0 calc(6px + env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -4px 24px rgba(15,28,46,0.08);
+    z-index: 500 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Each button: icon + label stacked, equal width */
+  .action-dock .dock-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    max-width: 80px;
+  }
+
+  /* Icon button */
+  .action-dock .dock-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    margin: 0;
+    padding: 0;
+    opacity: 1;
+    background: transparent;
+    border: none;
+    color: #526070;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .action-dock .dock-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .action-dock .dock-btn:active {
+    background: rgba(26,122,110,0.1);
+    color: #1a7a6e;
+    transform: scale(0.9);
+    transition-duration: 0.08s;
+    border-radius: 12px;
+  }
+
+  /* Label below icon — always visible */
+  .action-dock .dock-item::before {
+    content: attr(data-label);
+    display: block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #526070;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  /* Active item: accent color for label + icon */
+  .action-dock .dock-item:active::before {
+    color: #1a7a6e;
+  }
+
+  /* Hide desktop elements */
+  .action-dock .dock-item::after { display: none; }
+  .action-dock .dock-tooltip { display: none; }
+
+  /* Toast above the bar */
+  .dock-toast {
+    bottom: calc(5rem + env(safe-area-inset-bottom));
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(6px);
+  }
+  .dock-toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ── VIDEO CARD ── */
+.video-card{
+  background:var(--ink);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius);
+  padding:1.4rem 1.5rem;
+  margin-top:1rem;
+  display:flex;align-items:center;gap:1.1rem;
+  cursor:pointer;
+  transition:all 0.25s;
+  text-decoration:none;
+}
+.video-card:hover{background:#162438;border-color:rgba(26,122,110,0.4);transform:translateY(-2px);}
+.video-play{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--sage);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1rem;
+  box-shadow:0 0 0 8px rgba(26,122,110,0.15);
+  transition:box-shadow 0.3s;
+}
+.video-card:hover .video-play{box-shadow:0 0 0 12px rgba(26,122,110,0.2);}
+.video-meta{flex:1;}
+.video-meta h5{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:2px;}
+.video-meta p{font-size:0.72rem;color:rgba(255,255,255,0.45);}
+.video-badge{
+  font-size:0.62rem;font-weight:700;
+  background:rgba(26,122,110,0.2);
+  color:#6ecfc4;border:1px solid rgba(26,122,110,0.3);
+  padding:3px 9px;border-radius:100px;
+  flex-shrink:0;
+}
+
+/* ── DEEP DIVE (collapsed thinking+concept) ── */
+.deepdive-s{background:var(--bg2);}
+.dd-teaser{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.dd-header{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:1.6rem 2rem;
+  cursor:pointer;
+  user-select:none;
+  transition:background 0.2s;
+  gap:1.5rem;flex-wrap:wrap;
+}
+.dd-header:hover{background:var(--bg2);}
+.dd-header-left h3{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.2rem;font-weight:700;color:var(--ink);
+  margin-bottom:0.25rem;
+}
+.dd-header-left p{font-size:0.82rem;color:var(--mid);line-height:1.6;}
+.dd-header-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:0.6rem;}
+.dd-pill{
+  font-size:0.67rem;font-weight:600;
+  padding:3px 10px;border-radius:100px;
+  background:var(--sage-light);color:var(--sage);
+  border:1px solid var(--sage-border);
+}
+.dd-toggle-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:#fff;
+  padding:0.65rem 1.4rem;border-radius:8px;
+  font-size:0.78rem;font-weight:600;
+  border:none;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;
+  transition:all 0.2s;
+}
+.dd-toggle-btn:hover{background:var(--sage);}
+.dd-arrow{transition:transform 0.35s ease;display:inline-block;}
+.dd-toggle-btn.open .dd-arrow{transform:rotate(180deg);}
+.dd-body{
+  display:none;
+  border-top:1px solid var(--border);
+}
+.dd-body.open{display:block;}
+.dd-inner-section{
+  padding:2rem 2rem 0.5rem;
+  border-bottom:1px solid var(--border);
+}
+.dd-inner-section:last-child{border-bottom:none;padding-bottom:2rem;}
+.dd-section-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);
+  display:block;margin-bottom:0.6rem;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="topnav">
+  <div class="nav-logo">Tapasya <span>Pattnaik</span></div>
+  <a href="https://www.linkedin.com/in/tapasya-pattnaik/" target="_blank" class="nav-cta">Say Hello ↗</a>
+  <button class="hbg" id="hbg" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob" id="mob">
+  <a href="#about" onclick="cm()">About</a>
+  <a href="#capabilities" onclick="cm()">Capabilities</a>
+  <a href="#work" onclick="cm()">Work</a>
+  <a href="#edge" onclick="cm()">My Edge</a>
+  <a href="#awards" onclick="cm()">Awards</a>
+  <a href="#testimonials" onclick="cm()">Testimonials</a>
+  <a href="#contact" onclick="cm()">Contact</a>
+</div>
+
+<!-- VERTICAL NAV -->
+<div class="right-rail" id="rightRail">
+<nav class="vnav" id="vnav">
+  <div class="vn" data-s="hero"><span class="vn-lbl">Top</span></div>
+  <div class="vn" data-s="about"><span class="vn-lbl">About</span></div>
+  <div class="vn" data-s="capabilities"><span class="vn-lbl">Capabilities</span></div>
+  <div class="vn" data-s="work"><span class="vn-lbl">Work</span></div>
+  <div class="vn" data-s="edge"><span class="vn-lbl">My Edge</span></div>
+  <div class="vn" data-s="awards"><span class="vn-lbl">Awards</span></div>
+  <div class="vn" data-s="testimonials"><span class="vn-lbl">Testimonials</span></div>
+  <div class="vn" data-s="deepdive"><span class="vn-lbl">Deep Dive</span></div>
+  <div class="vn" data-s="contact"><span class="vn-lbl">Contact</span></div>
+</nav>
+</div><!-- /.right-rail -->
+
+<!-- ACTION DOCK — independent fixed element, positioned by JS -->
+<div class="action-dock dock--outline" id="actionDock"
+     role="toolbar" aria-label="Quick actions">
+
+  <div class="dock-item" data-label="Get in Touch">
+    <button class="dock-btn" id="dockContact"
+      aria-label="Get in Touch"
+      onclick="dockScroll('contact')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      </svg>
+    </button>
+    <div class="dock-tooltip" role="tooltip">Get in Touch</div>
+  </div>
+
+  <div class="dock-item" data-label="See My Work">
+    <button class="dock-btn" id="dockWork"
+      aria-label="See My Work"
+      onclick="dockScroll('work')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="7" width="20" height="14" rx="2"/>
+        <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+      </svg>
+    </button>
+    <div class="dock-tooltip" role="tooltip">See My Work</div>
+  </div>
+
+  <div class="dock-item" data-label="Export">
+    <button class="dock-btn" id="dockExport"
+      aria-label="Export Resume"
+      onclick="exportResume()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="12" y1="18" x2="12" y2="12"/>
+        <polyline points="9 15 12 18 15 15"/>
+      </svg>
+    </button>
+    <div class="dock-tooltip" role="tooltip">Export Resume</div>
+  </div>
+
+  <div class="dock-item" data-label="Copy Link">
+    <button class="dock-btn" id="dockCopy"
+      aria-label="Copy page link"
+      onclick="dockCopyLink()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+      </svg>
+    </button>
+    <div class="dock-tooltip" role="tooltip">Copy Link</div>
+  </div>
+
+</div>
+<div class="dock-toast" id="dockToast" role="status" aria-live="polite"></div>
+
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-l">
+    <div class="hero-tag">Senior Business Analyst · Cognizant</div>
+    <h1 class="hero-h1">
+      Strategist.<br>Builder.<br><em>Dot connector.</em>
+    </h1>
+    <p class="hero-byline">
+      I make complex things move — bridging <strong>CXO vision with
+      cross-functional execution</strong>, and building AI-powered thinking
+      into everything I touch. 4+ years of turning the messy middle
+      into structured outcomes.
+    </p>
+    <div class="hero-chips">
+      <span class="hchip sage">AI Product Thinking</span>
+      <span class="hchip">Program Leadership</span>
+      <span class="hchip">Audience Intelligence</span>
+      <span class="hchip">CXO Strategy</span>
+    </div>
+
+  </div>
+  <div class="hero-r" style="flex-direction:column;gap:1rem;">
+    <div class="gbox">
+      <div class="gbox-lbl">Quick Snapshot</div>
+      <div class="gstat">
+        <div class="gnum">4+</div>
+        <div class="gdesc">Years leading multi-stakeholder programs and CXO-level strategy at Cognizant</div>
+      </div>
+      <div class="gdiv"></div>
+      <div class="gstat">
+        <div class="gnum">6</div>
+        <div class="gdesc">Certifications — CSM, CSPO, AWS Cloud, Google AI, Digital Marketing, Excel Advanced</div>
+      </div>
+      <div class="gdiv"></div>
+      <div class="gstat">
+        <div class="gnum">5×</div>
+        <div class="gdesc">National-level competition finalist — IIM Raipur, DSE Chakravyuh, Mondelez & more</div>
+      </div>
+      <div class="gtags">
+        <span class="gtag">MBA — XIMB</span>
+        <span class="gtag">B.Tech — CIPET</span>
+        <span class="gtag">Bengaluru</span>
+      </div>
+    </div>
+    <!-- VIDEO INTRO CARD -->
+    <a href="#" class="video-card" id="videoCard" onclick="playVideo(event)">
+      <div class="video-play">▶</div>
+      <div class="video-meta">
+        <h5>60-sec Intro</h5>
+        <p>Watch Tapasya introduce herself</p>
+      </div>
+      <div class="video-badge">Coming Soon</div>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section about-s">
+  <span class="ey">01 — The person behind the work</span>
+  <h2 class="sh2">Where structure<br>meets <em>curiosity.</em></h2>
+  <div class="about-grid">
+    <div class="reveal">
+      <p class="about-p">I live in the <strong>no-man's land between vision and execution</strong> — the messy, unstructured space where most programs get stuck. I'm the person who walks in, maps the terrain, and gets things moving again.</p>
+      <p class="about-p">At Cognizant, I've worked directly with the <strong>Chief of Strategy Office</strong> — standardising governance, building dashboards that make leadership decisions land faster, facilitating workshops that turn friction into alignment, and tracking commitments until they close.</p>
+      <p class="about-p">Outside of strategy, I'm deeply curious about how <strong>AI, creativity, and human behaviour</strong> intersect — particularly in entertainment, music, and storytelling. That curiosity shapes how I approach every problem I work on.</p>
+      <p class="about-p">I hold an <strong>MBA from XIMB</strong> and bring hands-on AI fluency — Vertex AI, Azure OpenAI, Copilot fine-tuning, agent-based prompting — into everything I build.</p>
+    </div>
+    <div class="tl reveal d2">
+      <div class="tl-row">
+        <div class="tl-col">
+          <div class="tl-dot" style="background:var(--sage);box-shadow:0 0 0 3px var(--sage-light);"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-i">
+          <h4>Senior Business Analyst — Cognizant</h4>
+          <p>Strategy & Product Management · CXO Office</p>
+          <time>May 2022 – Present · Bengaluru</time>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-col">
+          <div class="tl-dot" style="background:var(--border2);"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-i">
+          <h4>Digital Marketing Intern — Acelot Innovations</h4>
+          <p>B2B SaaS Strategy · Campaign Management · CMO Pitching</p>
+          <time>Apr 2021 – Aug 2021 · Remote</time>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-col">
+          <div class="tl-dot" style="background:var(--border2);"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-i">
+          <h4>KYC Analyst — Yoti Biometrics</h4>
+          <p>AML Compliance · 99% Accuracy · Best Presentation Award</p>
+          <time>Jan 2019 – Jun 2020 · Bengaluru</time>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-col">
+          <div class="tl-dot" style="background:var(--border);"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-i">
+          <h4>MBA — Xavier Institute of Management (XIMB)</h4>
+          <p>Business Management</p>
+          <time>Aug 2020 – Apr 2022 · Bhubaneswar</time>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-col">
+          <div class="tl-dot" style="background:var(--border);"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-i">
+          <h4>B.Tech — CIPET</h4>
+          <p>Central Institute of Plastics Engineering & Technology</p>
+          <time>Aug 2013 – Jun 2017 · Bhubaneswar</time>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities" class="section caps-s">
+  <span class="ey">04 — What I bring</span>
+  <h2 class="sh2">Five things I'm<br><em>genuinely good at.</em></h2>
+  <div class="caps-grid">
+    <div class="cap reveal">
+      <div class="cap-n">01</div>
+      <h3>AI Product Strategy</h3>
+      <p>Turning AI capability into roadmaps, success metrics, and GTM execution. I've applied Vertex AI, Azure OpenAI, and Copilot inside live Cognizant programs — not just in theory.</p>
+      <div class="cap-tools"><span class="ct">Vertex AI</span><span class="ct">Azure OpenAI</span><span class="ct">PRD/BRD</span><span class="ct">GTM</span></div>
+    </div>
+    <div class="cap reveal d1">
+      <div class="cap-n">02</div>
+      <h3>Audience & Market Intelligence</h3>
+      <p>Building frameworks that translate data into decisions — gap analysis, trend synthesis, and executive dashboards that shaped senior leadership's regional prioritisation at Cognizant.</p>
+      <div class="cap-tools"><span class="ct">SQL</span><span class="ct">Trend Analysis</span><span class="ct">Dashboards</span><span class="ct">Market Research</span></div>
+    </div>
+    <div class="cap reveal d2">
+      <div class="cap-n">03</div>
+      <h3>Program & Delivery Leadership</h3>
+      <p>Running complex cross-functional programs end to end — milestone tracking, risk identification, unblocking execution, and closing commitments. CSM and CSPO certified.</p>
+      <div class="cap-tools"><span class="ct">CSM/CSPO</span><span class="ct">Agile/Scrum</span><span class="ct">JIRA</span><span class="ct">ServiceNow</span></div>
+    </div>
+    <div class="cap reveal">
+      <div class="cap-n">04</div>
+      <h3>Executive Communication</h3>
+      <p>Preparing C-suite leaders for strategic reviews and external engagements. I consolidate complexity into structured briefs that make decisions land quickly and clearly.</p>
+      <div class="cap-tools"><span class="ct">CXO Briefings</span><span class="ct">Figma</span><span class="ct">Miro</span><span class="ct">Presentations</span></div>
+    </div>
+    <div class="cap reveal d1">
+      <div class="cap-n">05</div>
+      <h3>UX & Design Thinking</h3>
+      <p>Applied Design Thinking and user empathy in a UX Hackathon — creating high-fidelity Figma prototypes and customer journey maps for a mobile app from scratch.</p>
+      <div class="cap-tools"><span class="ct">Figma Prototyping</span><span class="ct">Design Thinking</span><span class="ct">UAT</span><span class="ct">Journey Mapping</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" class="section work-s">
+  <span class="ey">03 — Selected work</span>
+  <h2 class="sh2">What I built<br>at <em>Cognizant.</em></h2>
+  <p class="edge-intro reveal" style="margin-bottom:2rem;">Click any project for detail. All work done at Cognizant — May 2022 to present.</p>
+
+  <div class="proj-grid" id="projGrid">
+
+    <!-- Card 1 -->
+    <div class="proj-card reveal" onclick="toggleProj('p1')" id="card-p1" aria-expanded="false">
+      <div class="proj-icon">🗓️</div>
+      <div class="proj-title">Event Hub</div>
+      <div class="proj-desc">AI-first enterprise platform orchestrating the full lifecycle of CEO, leadership, and HR events across Outlook and Teams.</div>
+      <div class="proj-tags">
+        <span class="proj-tag accent">Lead BA / PO</span>
+        <span class="proj-tag">GCP</span>
+        <span class="proj-tag">Multi-tenant</span>
+        <span class="proj-tag">GenAI</span>
+      </div>
+      <div class="proj-hint">Click to expand ↓</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="proj-card reveal d1" onclick="toggleProj('p2')" id="card-p2" aria-expanded="false">
+      <div class="proj-icon">📊</div>
+      <div class="proj-title">Account Dashboard — Smartdesk</div>
+      <div class="proj-desc">Executive dashboard giving leadership real-time visibility into account health, delivery metrics, and client relationships.</div>
+      <div class="proj-tags">
+        <span class="proj-tag accent">Lead BA</span>
+        <span class="proj-tag">Executive Dashboard</span>
+        <span class="proj-tag">Smartdesk</span>
+      </div>
+      <div class="proj-hint">Click to expand ↓</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="proj-card reveal d2" onclick="toggleProj('p3')" id="card-p3" aria-expanded="false">
+      <div class="proj-icon">🤖</div>
+      <div class="proj-title">CEO Dashboard</div>
+      <div class="proj-desc">Conversational AI platform for executive decision-making — natural language queries over finance, HR, innovation, and risk data.</div>
+      <div class="proj-tags">
+        <span class="proj-tag accent">GenAI</span>
+        <span class="proj-tag">Multi-agent</span>
+        <span class="proj-tag">Product Design</span>
+      </div>
+      <div class="proj-hint">Click to expand ↓</div>
+    </div>
+
+    <!-- Expand 1 -->
+    <div class="proj-expand" id="p1">
+      <div class="proj-expand-head">
+        <h4>Event Hub — AI-First Event Intelligence Platform</h4>
+        <button class="proj-expand-close" onclick="closeProj('p1','card-p1')" aria-label="Close">✕</button>
+      </div>
+      <div class="proj-expand-body">
+        <div class="proj-expand-col">
+          <p>Owned end-to-end BA and product ownership for an AI-enabled enterprise platform orchestrating the full lifecycle of CEO, leadership, L&D, HR, and functional events — built on GCP with multi-tenant architecture.</p>
+          <ul>
+            <li>Defined business problem, solution vision, and functional scope</li>
+            <li>Authored requirements decks, ARB presentations, and future-scope design artifacts</li>
+            <li>Designed template-driven event models for structured, comparable data capture</li>
+            <li>Led role-based access control design: Organiser, Attendee, Admin, Super Admin</li>
+          </ul>
+        </div>
+        <div class="proj-expand-col">
+          <ul>
+            <li>Collaborated with architects on multi-tenant design and scalability</li>
+            <li>Conducted functional walkthroughs, daily status calls, and stakeholder reviews</li>
+            <li>Led QA and UAT planning with validation checklists</li>
+          </ul>
+          <div class="proj-outcome">✅ Single system of record for enterprise events · Leadership-ready insights · Eliminated manual tracking gaps</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expand 2 -->
+    <div class="proj-expand" id="p2">
+      <div class="proj-expand-head">
+        <h4>Account Dashboard — Smartdesk</h4>
+        <button class="proj-expand-close" onclick="closeProj('p2','card-p2')" aria-label="Close">✕</button>
+      </div>
+      <div class="proj-expand-body">
+        <div class="proj-expand-col">
+          <p>Led functional design and stakeholder demonstrations for the Account Dashboard on the Smartdesk platform — enabling leadership and account teams with a single view of account health, delivery, and client relationships.</p>
+          <ul>
+            <li>Defined dashboard sections: Account Overview · Client Overview · Delivery · Innovation · Cognizant Relationship</li>
+            <li>Worked with stakeholders to refine editability and customisation for executive use</li>
+            <li>Coordinated with backend and data teams on integration feasibility</li>
+          </ul>
+        </div>
+        <div class="proj-expand-col">
+          <ul>
+            <li>Acted as primary bridge between executive feedback, design, and development</li>
+            <li>Ensured data presentation was leadership-ready and action-oriented</li>
+          </ul>
+          <div class="proj-outcome">✅ Improved executive visibility into account health · Customisable views aligned to leadership needs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expand 3 -->
+    <div class="proj-expand" id="p3">
+      <div class="proj-expand-head">
+        <h4>CEO Dashboard — Conversational Executive Insights</h4>
+        <button class="proj-expand-close" onclick="closeProj('p3','card-p3')" aria-label="Close">✕</button>
+      </div>
+      <div class="proj-expand-body">
+        <div class="proj-expand-col">
+          <p>Conceptualised and documented an AI-powered conversational dashboard for executive decision-making — solving the problem of fragmented leadership insights and slow decision cycles.</p>
+          <ul>
+            <li>Defined the multi-agent conversational architecture mapping executive queries to enterprise datasets</li>
+            <li>Articulated business value across finance, HR, innovation, and risk data domains</li>
+            <li>Authored executive-level presentations outlining approach and outcomes</li>
+          </ul>
+        </div>
+        <div class="proj-expand-col">
+          <ul>
+            <li>First to evaluate Gemini and Copilot for this use case — recognised by Director for delivery quality</li>
+            <li>Provided a scalable blueprint for GenAI-driven executive intelligence</li>
+          </ul>
+          <div class="proj-outcome">✅ Scalable GenAI blueprint · Leadership access to enterprise data via natural language</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="proj-card reveal" onclick="toggleProj('p4')" id="card-p4" aria-expanded="false">
+      <div class="proj-icon">🔒</div>
+      <div class="proj-title">Risk Module — MSUTILITY</div>
+      <div class="proj-desc">BA and QA governance contributor for an internal utility app — drove testing clarity, defect triaging, and onboarding compliance.</div>
+      <div class="proj-tags">
+        <span class="proj-tag accent">QA & Governance</span>
+        <span class="proj-tag">Risk</span>
+        <span class="proj-tag">Internal App</span>
+      </div>
+      <div class="proj-hint">Click to expand ↓</div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="proj-card reveal d1" onclick="toggleProj('p5')" id="card-p5" aria-expanded="false">
+      <div class="proj-icon">⚙️</div>
+      <div class="proj-title">Project IDEAL — Kantata PSA</div>
+      <div class="proj-desc">Functional SME for Cognizant's M&A onboarding initiative — migrating acquired entities onto the Kantata PSA platform.</div>
+      <div class="proj-tags">
+        <span class="proj-tag accent">Functional SME</span>
+        <span class="proj-tag">M&A</span>
+        <span class="proj-tag">PSA</span>
+        <span class="proj-tag">Data Migration</span>
+      </div>
+      <div class="proj-hint">Click to expand ↓</div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="proj-card reveal d2" onclick="toggleProj('p6')" id="card-p6" aria-expanded="false">
+      <div class="proj-icon">🧬</div>
+      <div class="proj-title">Bayer Life Sciences — A-SOR Phase 2</div>
+      <div class="proj-desc">Client-facing BA for a SharePoint Online migration at Bayer — requirements gathering, UAT, key-user training, and go-live support.</div>
+      <div class="proj-tags">
+        <span class="proj-tag accent">Client Engagement</span>
+        <span class="proj-tag">Bayer</span>
+        <span class="proj-tag">UAT</span>
+        <span class="proj-tag">Migration</span>
+      </div>
+      <div class="proj-hint">Click to expand ↓</div>
+    </div>
+
+    <!-- Expand 4 -->
+    <div class="proj-expand" id="p4">
+      <div class="proj-expand-head">
+        <h4>Risk Module — MSUTILITY</h4>
+        <button class="proj-expand-close" onclick="closeProj('p4','card-p4')" aria-label="Close">✕</button>
+      </div>
+      <div class="proj-expand-body">
+        <div class="proj-expand-col">
+          <p>Contributed as BA and QA governance lead for the Risk Module of an internal utility application — supporting testing readiness, defect triaging, and application governance compliance.</p>
+          <ul>
+            <li>Participated in stand-ups and functional review discussions</li>
+            <li>Supported prompt validation and defect triaging</li>
+            <li>Created and shared app registration and approval checklists</li>
+          </ul>
+        </div>
+        <div class="proj-expand-col">
+          <ul>
+            <li>Coordinated with cross-functional teams for governance and onboarding compliance</li>
+            <li>Reduced functional ambiguity across testing cycles</li>
+          </ul>
+          <div class="proj-outcome">✅ Improved testing clarity · Strengthened application governance readiness</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expand 5 -->
+    <div class="proj-expand" id="p5">
+      <div class="proj-expand-head">
+        <h4>Project IDEAL — Kantata PSA Transformation</h4>
+        <button class="proj-expand-close" onclick="closeProj('p5','card-p5')" aria-label="Close">✕</button>
+      </div>
+      <div class="proj-expand-body">
+        <div class="proj-expand-col">
+          <p>Worked as Functional SME for Project IDEAL — Cognizant's initiative to onboard acquired entities onto the Kantata Professional Services Automation platform as part of M&A integration.</p>
+          <ul>
+            <li>Collected, analysed, and validated BRDs for Financials, Invoices, Contracts, Rate Sets, and Timesheet integrations</li>
+            <li>Mapped data from source systems to Kantata objects — validating data quality and consistency</li>
+            <li>Supported SIT, data migration, and defect triaging activities</li>
+          </ul>
+        </div>
+        <div class="proj-expand-col">
+          <ul>
+            <li>Understood JIRA user stories and acted as functional liaison with delivery and technical teams</li>
+            <li>Delivered knowledge transfer to L1 support teams post-implementation</li>
+            <li>Documented financial performance metrics for future reference</li>
+          </ul>
+          <div class="proj-outcome">✅ Smooth PSA onboarding for acquired entities · Improved accuracy of project financials and time tracking</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expand 6 -->
+    <div class="proj-expand" id="p6">
+      <div class="proj-expand-head">
+        <h4>Bayer Life Sciences — A-SOR Phase 2</h4>
+        <button class="proj-expand-close" onclick="closeProj('p6','card-p6')" aria-label="Close">✕</button>
+      </div>
+      <div class="proj-expand-body">
+        <div class="proj-expand-col">
+          <p>Client-facing Business Analyst for Bayer's SharePoint Online migration — conducting requirements gathering, supporting UAT, delivering key-user training, and managing go-live documentation.</p>
+          <ul>
+            <li>Conducted requirements gathering workshops with client stakeholders</li>
+            <li>Demonstrated product functionality and delivered key-user training sessions</li>
+            <li>Supported requirements finalisation, UAT, and migration phases</li>
+          </ul>
+        </div>
+        <div class="proj-expand-col">
+          <ul>
+            <li>Developed inventory templates, FAQs, demos, user guides, and UAT artifacts</li>
+            <li>Acted as liaison between business users and technical teams during migration</li>
+            <li>Supported user adoption and confidence during post-go-live period</li>
+          </ul>
+          <div class="proj-outcome">✅ Smooth SharePoint Online migration · Improved user adoption and UAT confidence</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.proj-grid -->
+</section>
+
+<!-- MY EDGE -->
+<section id="edge" class="section edge-s">
+  <span class="ey">04 — What makes me, me</span>
+  <h2 class="sh2">Six things people<br><em>notice first.</em></h2>
+  <p class="edge-intro reveal">Not a list of adjectives — six patterns that consistently show up in how I work, whether someone's a colleague, a client, or a collaborator.</p>
+  <div class="edge-grid">
+    <div class="ec reveal">
+      <div class="ec-n">01</div>
+      <h4>Ambiguity → Clarity</h4>
+      <p>I take unclear mandates and return structured, executable plans. The chaotic early-stage is where I'm most useful — I've done this directly for the Chief of Strategy Office.</p>
+    </div>
+    <div class="ec reveal d1">
+      <div class="ec-n">02</div>
+      <h4>The Translator</h4>
+      <p>Engineering, ops, and business speak different languages. I'm fluent in all three — keeping everyone aligned without losing any team's priorities or trust.</p>
+    </div>
+    <div class="ec reveal d2">
+      <div class="ec-n">03</div>
+      <h4>AI Fluency</h4>
+      <p>Not just AI-aware — AI-active. Vertex AI, Azure OpenAI, GPT Playground, Copilot fine-tuning, agent prompting. These are tools I use daily, not terms on a CV.</p>
+    </div>
+    <div class="ec reveal">
+      <div class="ec-n">04</div>
+      <h4>Audience-First</h4>
+      <p>Everything I build starts with the human on the other end. Whether it's a dashboard, a strategy, or a product — I obsess over who it's for and why they should care.</p>
+    </div>
+    <div class="ec reveal d1">
+      <div class="ec-n">05</div>
+      <h4>Relentless Closure</h4>
+      <p>Ideas die in execution. I'm the follow-through force — tracking commitments, connecting teams, and ensuring agreed actions close. Consistently, every time.</p>
+    </div>
+    <div class="ec reveal d2">
+      <div class="ec-n">06</div>
+      <h4>Competitive Hunger</h4>
+      <p>Five national-level competition finals. I bring the same preparation and drive into every project I'm trusted with — regardless of the stakes on paper.</p>
+    </div>
+  </div>
+  <div class="mwrap">
+    <div class="mtrack">
+      <div class="mchip"><div class="dot"></div>Certified Scrum Master (CSM)</div>
+      <div class="mchip"><div class="dot"></div>Certified Scrum Product Owner (CSPO)</div>
+      <div class="mchip"><div class="dot"></div>AWS Certified Cloud Practitioner</div>
+      <div class="mchip"><div class="dot"></div>Google — Conversational Agents</div>
+      <div class="mchip"><div class="dot"></div>Fundamentals of Digital Marketing</div>
+      <div class="mchip"><div class="dot"></div>Excel Skills for Business · Advanced</div>
+      <div class="mchip"><div class="dot"></div>Certified Scrum Master (CSM)</div>
+      <div class="mchip"><div class="dot"></div>Certified Scrum Product Owner (CSPO)</div>
+      <div class="mchip"><div class="dot"></div>AWS Certified Cloud Practitioner</div>
+      <div class="mchip"><div class="dot"></div>Google — Conversational Agents</div>
+      <div class="mchip"><div class="dot"></div>Fundamentals of Digital Marketing</div>
+      <div class="mchip"><div class="dot"></div>Excel Skills for Business · Advanced</div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards" class="section awards-s">
+  <span class="ey">05 — Recognition</span>
+  <h2 class="sh2">A few things<br><em>worth mentioning.</em></h2>
+  <div class="awards-grid">
+    <div class="aw reveal">
+      <div class="aw-ic">🏆</div>
+      <h4>Best Presentation Award</h4>
+      <p>Business Expansion Strategy presented to senior leadership.</p>
+      <div class="aw-org">Yoti Biometrics</div>
+    </div>
+    <div class="aw reveal d1">
+      <div class="aw-ic">🥈</div>
+      <h4>Competition Runner-Up</h4>
+      <p>GenAI-driven solution — internal Cognizant case study.</p>
+      <div class="aw-org">Cognizant</div>
+    </div>
+    <div class="aw reveal d2">
+      <div class="aw-ic">📝</div>
+      <h4>National Finalist</h4>
+      <p>Article writing — Chakravyuh competition by DSE.</p>
+      <div class="aw-org">DSE · Chakravyuh</div>
+    </div>
+    <div class="aw reveal d3">
+      <div class="aw-ic">🌱</div>
+      <h4>National Finalist</h4>
+      <p>Sustainability in Fast Fashion — inter-college case study.</p>
+      <div class="aw-org">IIM Raipur · Kartavya</div>
+    </div>
+    <div class="aw reveal d4">
+      <div class="aw-ic">🍫</div>
+      <h4>Campus Qualifier</h4>
+      <p>New Product Launch — Healthy Snacking business case.</p>
+      <div class="aw-org">Mondelez Maestros</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="section testimonials-s">
+  <span class="ey">06 — In their own words</span>
+  <h2 class="sh2">What the people<br>I've worked with <em>say.</em></h2>
+  <div class="testi-grid">
+
+    <div class="testi-card reveal">
+      <span class="testi-quote-mark">"</span>
+      <p class="testi-text">Tapasya is an excellent resource and she is an <strong>asset to any team wherever she works.</strong> Highest quality as expected — deliverables, decks and presentations all superb. She met all goals and tasks on time, both planned and ad hoc. Which goals did she fall short on? <strong>Nothing.</strong></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">AR</div>
+        <div class="testi-meta">
+          <h5>Abdul Razak</h5>
+          <p>Program Manager · Cognizant</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal d1">
+      <span class="testi-quote-mark">"</span>
+      <p class="testi-text">Tapasya's ability to write <strong>detailed and accurate prompts when using LLMs</strong> is of high order. She takes ownership of a given task and owns it till the end — <strong>a rare quality now-a-days and very much appreciated.</strong> Her communication is of high class and her reports are clear, up-to-the-point and focussed. Overall, she is a <strong>valuable asset to the organization.</strong></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">KR</div>
+        <div class="testi-meta">
+          <h5>Krishnamoorthy R</h5>
+          <p>Associate Director · Cognizant</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal d2">
+      <span class="testi-quote-mark">"</span>
+      <p class="testi-text">Tapasya exhibits <strong>exceptional analytical skills</strong> — swiftly translating high-level requirements into actionable tasks with minimal guidance. She was among the first to evaluate both Gemini and Copilot for the CEO Dashboard, delivering outstanding results. <strong>Tapasya has performed exceptionally well and is fully prepared to take on responsibilities at the next level.</strong></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">NS</div>
+        <div class="testi-meta">
+          <h5>Nalini Sampath Kumar</h5>
+          <p>Director · Cognizant</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DEEP DIVE -->
+<section id="deepdive" class="section deepdive-s">
+  <span class="ey">07 — Go deeper</span>
+  <h2 class="sh2" style="margin-bottom:1.25rem;">How I <em>think</em> &<br>what I'd build.</h2>
+
+  <div class="dd-teaser reveal">
+    <div class="dd-header" onclick="toggleDeepDive()">
+      <div class="dd-header-left">
+        <h3>Thinking + Original Concept</h3>
+        <p>How I see the intersection of data, creativity and AI — and a product I'd build to prove it.</p>
+        <div class="dd-header-pills">
+          <span class="dd-pill">Creative Intelligence</span>
+          <span class="dd-pill">Systems Thinking</span>
+          <span class="dd-pill">AudienceIQ Concept</span>
+        </div>
+      </div>
+      <button class="dd-toggle-btn" id="ddBtn">
+        <span id="ddBtnText">Explore my thinking</span>
+        <span class="dd-arrow" id="ddArrow">↓</span>
+      </button>
+    </div>
+
+    <div class="dd-body" id="ddBody">
+
+      <!-- THINKING -->
+      <div class="dd-inner-section">
+        <span class="dd-section-label">How I see the world</span>
+        <p style="font-size:1rem;line-height:1.9;color:#3d5166;font-weight:300;max-width:680px;margin-bottom:1.75rem;">
+          I'm drawn to spaces where <strong style="color:var(--ink);font-weight:600;">data, creativity, and human behaviour collide.</strong>
+          Whether it's how streaming platforms decide what stories get greenlit, how music
+          platforms build emotional loyalty, or how AI can make creative decisions sharper —
+          these intersections are where the most interesting problems live.
+        </p>
+        <div class="tgrid">
+          <div class="tcard">
+            <div class="tcard-icon">🎬</div>
+            <h4>Creative Intelligence</h4>
+            <p>Platforms and studios sit on goldmines of audience data. I think about how AI can turn that signal into creative conviction — not replacing intuition, but sharpening it.</p>
+          </div>
+          <div class="tcard">
+            <div class="tcard-icon">🎵</div>
+            <h4>Audience & Emotion</h4>
+            <p>Music and storytelling create emotional loyalty unlike almost any other product. I'm fascinated by how data can help creators understand and deepen that connection at scale.</p>
+          </div>
+          <div class="tcard">
+            <div class="tcard-icon">⚙️</div>
+            <h4>Systems Thinking</h4>
+            <p>The best products aren't just features — they're systems. I love mapping how things connect, where friction hides, and what one structural change can unlock across a whole ecosystem.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONCEPT -->
+      <div class="dd-inner-section">
+        <span class="dd-section-label">An original idea</span>
+        <div class="cpill" style="margin-bottom:1rem;">✦ AI Product Thinking</div>
+        <div class="concept-teaser" style="background:var(--bg2);border:none;border-radius:0;padding:0;margin-bottom:1.5rem;">
+          <div class="ct-inner" style="padding:0;">
+            <div class="ct-left">
+              <div class="ct-name"><em>AudienceIQ</em></div>
+              <p class="ct-desc">An AI product concept — predicting whether creative content will land with its audience before a single frame is shot.</p>
+            </div>
+          </div>
+        </div>
+        <div class="cbox" id="conceptFull">
+          <div class="cbox-head">
+            <div>
+              <h3><em>AudienceIQ</em> — Intelligent Content Greenlight Engine</h3>
+              <p>An AI-powered platform that helps creative executives make data-backed greenlight decisions — predicting audience reception, market fit, and franchise potential before production begins.</p>
+            </div>
+            <div class="cbadge">✦ Original Concept</div>
+          </div>
+          <div class="cbox-body">
+            <div class="ccol">
+              <h4>The Problem Worth Solving</h4>
+              <p>Creative decisions are still largely made on gut, legacy relationships, and trailing data. The result: expensive productions that miss their audience — not because the story was bad, but because the intelligence wasn't there at the decision point.</p>
+              <p>AudienceIQ brings predictive AI into the earliest creative conversation, giving decision-makers a living map of audience appetite, competitive whitespace, and cultural timing.</p>
+              <div class="cc-pills">
+                <span class="cc-pill">Audience Intelligence</span>
+                <span class="cc-pill">Content Strategy</span>
+                <span class="cc-pill">Predictive AI</span>
+                <span class="cc-pill">Market Fit</span>
+              </div>
+            </div>
+            <div class="ccol">
+              <h4>How It Would Work</h4>
+              <div class="cflow">
+                <div class="cstep"><div class="cnum">1</div><div class="cstep-t"><h5>Ingest Signal</h5><p>Social sentiment, streaming behaviour, search trends & demographic shifts across 50+ markets in real time.</p></div></div>
+                <div class="cstep"><div class="cnum">2</div><div class="cstep-t"><h5>Score the Concept</h5><p>Audience Fit Score, Genre Saturation Index, and Cultural Timing Window — produced by a trained model against the pitch.</p></div></div>
+                <div class="cstep"><div class="cnum">3</div><div class="cstep-t"><h5>Simulate & Recommend</h5><p>Release windows, cast archetypes, localisation priorities, franchise potential — all generated as strategic options.</p></div></div>
+                <div class="cstep"><div class="cnum">4</div><div class="cstep-t"><h5>Executive Brief</h5><p>One-page greenlight summary built for a decision-maker's 10-minute window.</p></div></div>
+              </div>
+            </div>
+            <div class="cimpact">
+              <div class="ci-item"><div class="ci-num">~40%</div><div class="ci-lbl">Reduction in greenlight misses</div></div>
+              <div class="ci-item"><div class="ci-num">10×</div><div class="ci-lbl">Faster audience insight generation</div></div>
+              <div class="ci-item"><div class="ci-num">$B+</div><div class="ci-lbl">Production investment protected annually</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end dd-body -->
+  </div><!-- end dd-teaser -->
+</section>
+
+
+
+<!-- CONTACT -->
+<section id="contact" class="contact-s">
+  <div class="reveal">
+    <span class="ey" style="color:var(--sage);">08 — Let's talk</span>
+    <h2 class="sh2" style="margin-bottom:0;">Good conversations<br>start <em>somewhere.</em></h2>
+    <p class="contact-tagline">Whether it's a new project, a shared problem, or just coffee — I'm always happy to meet interesting people doing interesting things.</p>
+  </div>
+  <div class="crows reveal d2">
+    <a href="/cdn-cgi/l/email-protection#384c5948594b41591648594c4c56595153785b575f56514259564c165b5755" class="crow">
+      <div class="crow-i">✉️</div>
+      <div class="crow-t">
+        <span class="crow-lbl">Email</span>
+        <span class="crow-val"><span class="__cf_email__" data-cfemail="ccb8adbcadbfb5ade2bcadb8b8a2ada5a78cafa3aba2a5b6ada2b8e2afa3a1">[email&#160;protected]</span></span>
+      </div>
+      <span class="crow-arr">→</span>
+    </a>
+    <a href="https://www.linkedin.com/in/tapasya-pattnaik/" target="_blank" class="crow">
+      <div class="crow-i">💼</div>
+      <div class="crow-t">
+        <span class="crow-lbl">LinkedIn</span>
+        <span class="crow-val">linkedin.com/in/tapasya-pattnaik</span>
+      </div>
+      <span class="crow-arr">→</span>
+    </a>
+    <a href="tel:+917978609092" class="crow">
+      <div class="crow-i">📞</div>
+      <div class="crow-t">
+        <span class="crow-lbl">Phone</span>
+        <span class="crow-val">+91 79786 09092</span>
+      </div>
+      <span class="crow-arr">→</span>
+    </a>
+  </div>
+</section>
+
+
+<footer>
+  Tapasya Pattnaik · Strategist · Builder · <span>Dot Connector</span> · Bengaluru, India
+</footer>
+
+
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── DEEP DIVE TOGGLE ──
+function toggleDeepDive(){
+  const body = document.getElementById('ddBody');
+  const btn  = document.getElementById('ddBtn');
+  const txt  = document.getElementById('ddBtnText');
+  const arr  = document.getElementById('ddArrow');
+  const isOpen = body.classList.contains('open');
+  if(isOpen){
+    body.classList.remove('open');
+    btn.classList.remove('open');
+    txt.textContent = 'Explore my thinking';
+    arr.style.transform = 'rotate(0deg)';
+  } else {
+    body.classList.add('open');
+    btn.classList.add('open');
+    txt.textContent = 'Close';
+    arr.style.transform = 'rotate(180deg)';
+    setTimeout(()=>document.getElementById('deepdive').scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }
+}
+
+// ── VIDEO PLACEHOLDER ──
+function playVideo(e){
+  e.preventDefault();
+  showToast('Video intro coming soon — check back shortly!');
+}
+
+// FAB init moved to DOMContentLoaded below
+
+// ── EXPORT RESUME ──
+function exportResume(){
+  showToast('Preparing resume PDF\u2026');
+  setTimeout(()=>{
+    const w = window.open('','_blank');
+    if(!w) return showToast('Please allow popups to export resume');
+    // Build resume HTML safely — no raw HTML tags in source
+    const tag = (t,cls,html) => '<'+t+(cls?' class="'+cls+'"':'')+'>'+html+'</'+t+'>';
+    const div = (cls,html) => tag('div',cls,html);
+    const span = (cls,html) => tag('span',cls,html);
+    const css = [
+      '*{box-sizing:border-box;margin:0;padding:0;}',
+      'body{font-family:sans-serif;color:#0f1c2e;background:#fff;padding:2.5rem 3rem;font-size:13px;line-height:1.6;max-width:800px;margin:0 auto;}',
+      'h1{font-size:2rem;font-weight:700;}h1 em{color:#1a7a6e;font-style:normal;}',
+      '.tag{font-size:0.78rem;color:#526070;text-transform:uppercase;letter-spacing:0.08em;margin:4px 0 10px;}',
+      '.cr{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.78rem;color:#526070;padding-bottom:10px;margin-bottom:16px;border-bottom:2px solid #0f1c2e;}',
+      '.cr a{color:#1a7a6e;text-decoration:none;}',
+      '.st{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:#1a7a6e;margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid #cdd8e6;}',
+      '.sm{font-size:0.88rem;line-height:1.8;color:#3d5166;}',
+      '.ei{margin-bottom:12px;}.eh{display:flex;justify-content:space-between;gap:8px;}.et{font-weight:700;font-size:0.9rem;}.ed{font-size:0.72rem;color:#8fa3b4;white-space:nowrap;}',
+      '.es{font-size:0.78rem;color:#526070;margin:2px 0 5px;}',
+      'ul{padding-left:16px;}ul li{font-size:0.8rem;color:#3d5166;margin-bottom:3px;}',
+      '.sg{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;}',
+      '.sc{font-weight:700;font-size:0.78rem;color:#0f1c2e;}.si{font-size:0.78rem;color:#3d5166;padding:2px 0;border-bottom:1px solid #e8eef5;}',
+      '.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}',
+      '.chip{font-size:0.7rem;background:#e8eef5;color:#526070;padding:2px 9px;border-radius:100px;border:1px solid #cdd8e6;}',
+      '@media print{body{padding:1.5rem 2rem;}@page{margin:0.8cm;}}'
+    ].join('');
+
+    const expItem = (title, date, sub, bullets) =>
+      div('ei',
+        div('eh', span('et',title)+span('ed',date)) +
+        div('es',sub) +
+        '<ul>'+bullets.map(b=>'<li>'+b+'</li>').join('')+'</ul>'
+      );
+
+    const body = [
+      '<h1>Tapasya <em>Pattnaik</em></h1>',
+      div('tag','Senior Business Analyst \u00b7 AI Product Strategist \u00b7 Strategist \u00b7 Builder \u00b7 Dot Connector'),
+      div('cr',
+        '<span>\ud83d\udccd Bengaluru, KA 560037</span>' +
+        '<a href="mailto:tapasya.pattnaik@cognizant.com">\u2709 tapasya.pattnaik@cognizant.com</a>' +
+        '<span>\ud83d\udcde +91 79786 09092</span>' +
+        '<a href="https://linkedin.com/in/tapasya-pattnaik">\ud83d\udcbc linkedin.com/in/tapasya-pattnaik</a>'
+      ),
+      div('st','Professional Summary'),
+      div('sm','Strategic Program & Business Operations Leader with 4+ years of experience driving multi-stakeholder initiatives, structured governance reviews, and cross-functional execution. Known for enabling senior leadership through program management rigour, AI-led process improvements, and high-impact business interventions.'),
+      div('st','Work Experience'),
+      expItem('Senior Business Analyst \u2014 Cognizant','May 2022 \u2013 Present \u00b7 Bengaluru','Strategy & Product Management \u00b7 CXO Office Support',[
+        'Led structured governance reviews and milestone tracking for strategic initiatives under the Chief of Strategy Office',
+        'Standardised program dashboards and created executive-ready insights supporting leadership\'s regional prioritisation',
+        'Facilitated cross-functional workshops to diagnose operational constraints and drive stakeholder alignment',
+        'Leveraged Vertex AI, Azure OpenAI, and Copilot for AI-led process improvements and workflow automation',
+        'Acted as primary follow-through owner for CXO-level interventions \u2014 tracking, unblocking, and closing commitments'
+      ]),
+      expItem('Digital Marketing Intern \u2014 Acelot Innovations','Apr 2021 \u2013 Aug 2021 \u00b7 Remote','B2B SaaS Strategy \u00b7 Digital Marketing',[
+        'Developed B2B digital marketing strategies for a SaaS LMS, boosting brand awareness and lead generation',
+        'Pitched directly to CMO for Content Tool Subscriptions, optimising content automation and scalability'
+      ]),
+      expItem('KYC Analyst \u2014 Yoti Biometrics','Jan 2019 \u2013 Jun 2020 \u00b7 Bengaluru','AML Compliance \u00b7 Regulatory Research',[
+        'Assessed authenticity of national documents and maintained AML policies with 99% accuracy',
+        'Recognised with Best Presentation Award for devising a comprehensive Business Expansion Strategy'
+      ]),
+      div('st','Education'),
+      div('ei',div('eh',span('et','MBA \u2014 Business Management, XIMB')+span('ed','Aug 2020 \u2013 Apr 2022'))),
+      div('ei',div('eh',span('et','B.Tech \u2014 Plastics Engineering, CIPET')+span('ed','Aug 2013 \u2013 Jun 2017'))),
+      div('st','Skills'),
+      div('sg',[
+        ['Product & Strategy','Product Strategy \u00b7 Roadmapping \u00b7 BRD/PRD \u00b7 GTM Coordination'],
+        ['AI & Technical','Vertex AI \u00b7 Azure OpenAI \u00b7 Copilot \u00b7 SQL \u00b7 AWS Cloud'],
+        ['Program Leadership','Agile/Scrum \u00b7 JIRA \u00b7 Sprint Planning \u00b7 Stakeholder Management'],
+        ['Design & Communication','Figma \u00b7 Miro \u00b7 Executive Presentations \u00b7 Design Thinking']
+      ].map(([s,v])=>div('',span('sc',s)+div('si',v))).join('')),
+      div('st','Certifications'),
+      div('chips',['CSM','CSPO','AWS Cloud Practitioner','Google Conversational Agents','Digital Marketing','Excel Advanced'].map(c=>span('chip',c)).join('')),
+      div('st','Awards & Recognition'),
+      div('chips',[
+        '\ud83c\udfc6 Best Presentation \u2014 Yoti',
+        '\ud83e\udd48 Runner-Up \u2014 Cognizant',
+        '\ud83d\udcdd National Finalist \u2014 DSE',
+        '\ud83c\udf31 National Finalist \u2014 IIM Raipur',
+        '\ud83c\udf6b Campus Qualifier \u2014 Mondelez'
+      ].map(c=>span('chip',c)).join(''))
+    ].join('');
+
+    const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tapasya Pattnaik \u2014 Resume</title>'
+      + '<style>'+css+'</style></head><body>'+body
+      + '<scr'+'ipt>window.onload=function(){window.print();}</scr'+'ipt></body></html>';
+
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+  }, 400);
+}
+
+// ── COPY LINK (legacy — dock uses dockCopyLink) ──
+function copyLink(){
+  dockCopyLink();
+}
+
+// ── SCHEDULE CHAT ──
+function scheduleChat(){
+  const subject = encodeURIComponent("Let's connect — saw your profile");
+  const body = encodeURIComponent("Hi Tapasya,\n\nI came across your profile and would love to connect for a quick chat.\n\nBest,");
+  window.open('mailto:tapasya.pattnaik@cognizant.com?subject='+subject+'&body='+body);
+}
+
+// ── LEGACY TOAST (kept for exportResume feedback) ──
+function showToast(msg){ dockShowToast(msg); }
+
+// ── PROJECT CARDS ──
+var openProjId = null;
+
+function toggleProj(id) {
+  var panel = document.getElementById(id);
+  var cardId = 'card-' + id;
+  var card   = document.getElementById(cardId);
+  if (!panel) return;
+
+  // Close if already open
+  if (openProjId === id) {
+    closeProj(id, cardId);
+    return;
+  }
+  // Close previous if any
+  if (openProjId) {
+    var prevPanel = document.getElementById(openProjId);
+    var prevCard  = document.getElementById('card-' + openProjId);
+    if (prevPanel) prevPanel.classList.remove('open');
+    if (prevCard)  { prevCard.classList.remove('active'); prevCard.setAttribute('aria-expanded','false'); }
+  }
+  // Open new
+  panel.classList.add('open');
+  if (card) { card.classList.add('active'); card.setAttribute('aria-expanded','true'); }
+  openProjId = id;
+  // Smooth scroll to panel
+  setTimeout(function() {
+    panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 80);
+}
+
+function closeProj(id, cardId) {
+  var panel = document.getElementById(id);
+  var card  = document.getElementById(cardId);
+  if (panel) panel.classList.remove('open');
+  if (card)  { card.classList.remove('active'); card.setAttribute('aria-expanded','false'); }
+  if (openProjId === id) openProjId = null;
+}
+
+// ── ACTION DOCK JS ──
+
+// Smooth scroll helper (used by dock buttons)
+function dockScroll(sectionId) {
+  var el = document.getElementById(sectionId);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Toast helper
+function dockShowToast(msg, duration) {
+  var t = document.getElementById('dockToast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._dockTimer);
+  t._dockTimer = setTimeout(function() { t.classList.remove('show'); }, duration || 2000);
+}
+
+// Copy link
+function dockCopyLink() {
+  var btn = document.getElementById('dockCopy');
+  navigator.clipboard.writeText(window.location.href)
+    .then(function() {
+      if (btn) {
+        btn.classList.add('success');
+        setTimeout(function() { btn.classList.remove('success'); }, 1800);
+      }
+      dockShowToast('Link copied ✓');
+    })
+    .catch(function() { dockShowToast('Copy failed'); });
+}
+
+// Mobile: tap on button shows label toast instead of tooltip
+(function initMobileDock() {
+  var MOBILE = window.matchMedia('(max-width: 768px)');
+  var labels = {
+    dockContact: 'Get in Touch',
+    dockWork:    'See My Work',
+    dockExport:  'Export Resume',
+    dockCopy:    'Copy Link'
+  };
+  Object.keys(labels).forEach(function(id) {
+    var btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('touchend', function() {
+      if (MOBILE.matches) {
+        // show label as toast on first tap, action fires on second
+        // (single-tap: show label; double-tap within 600ms: fire action)
+        // Simple approach: show label toast briefly alongside action
+        dockShowToast(labels[id], 1400);
+      }
+    }, { passive: true });
+  });
+})();
+
+
+
+
+// ── POSITION DOCK BELOW RIGHT-RAIL ──
+function positionActionDock() {
+  if (window.innerWidth <= 1200) return;
+  var rail = document.getElementById('rightRail');
+  var dock = document.getElementById('actionDock');
+  if (!rail || !dock) return;
+
+  var railRect = rail.getBoundingClientRect();
+  var dockH    = dock.offsetHeight;
+  var vpH      = window.innerHeight;
+  var GAP      = 10;   // gap between rail bottom and dock top
+  var MARGIN   = 16;   // min clearance from viewport bottom
+
+  // Place dock directly below rail
+  var desiredTop = railRect.bottom + GAP;
+
+  // If that pushes dock below viewport, clamp it up
+  var maxTop = vpH - dockH - MARGIN;
+
+  // Never place dock above the rail
+  var minTop = railRect.bottom + GAP;
+
+  var finalTop = Math.max(minTop, Math.min(desiredTop, maxTop));
+
+  dock.style.top       = finalTop + 'px';
+  dock.style.transform = 'none';
+}
+window.addEventListener('load',   positionActionDock);
+window.addEventListener('resize', positionActionDock);
+
+// ── ALL DOM-DEPENDENT CODE ── wrapped so it runs after full parse
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Nav scroll shadow
+  const topnav = document.getElementById('topnav');
+  if(topnav) window.addEventListener('scroll',()=>{
+    topnav.classList.toggle('scrolled', window.scrollY > 10);
+  },{passive:true});
+
+  // Mobile menu
+  const hbg = document.getElementById('hbg');
+  const mob = document.getElementById('mob');
+  if(hbg && mob) hbg.addEventListener('click',()=>mob.classList.toggle('open'));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t){e.preventDefault();if(mob)mob.classList.remove('open');t.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+
+  // Vertical nav clicks
+  document.querySelectorAll('.vn').forEach(v=>{
+    v.addEventListener('click',()=>{
+      const t = document.getElementById(v.dataset.s);
+      if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  // Reveal on scroll
+  const revs = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:0.05,rootMargin:'0px 0px -20px 0px'});
+  revs.forEach(r=>io.observe(r));
+
+  // Active vnav on load
+  (function(){
+    let cur='hero';
+    document.querySelectorAll('section[id]').forEach(s=>{
+      if(window.scrollY>=s.offsetTop-90)cur=s.id;
+    });
+    document.querySelectorAll('.vn').forEach(v=>v.classList.toggle('act',v.dataset.s===cur));
+  })();
+
+  // Active states on scroll
+  const secs = document.querySelectorAll('section[id]');
+  const vns  = document.querySelectorAll('.vn');
+  window.addEventListener('scroll',()=>{
+    let cur='hero';
+    secs.forEach(s=>{if(window.scrollY>=s.offsetTop-90)cur=s.id;});
+    vns.forEach(v=>v.classList.toggle('act',v.dataset.s===cur));
+  },{passive:true});
+
+  // FAB — always visible as part of right column, no scroll hide needed
+
+});</script>
+</body>
+</html>
