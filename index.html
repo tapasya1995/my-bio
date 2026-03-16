@@ -502,27 +502,86 @@ body::before{
 ══════════════════════════════════════ */
 .marquee-divider{
   width:100%;overflow:hidden;
-  background:var(--ink2);padding:10px 0;
-  border-top:1px solid rgba(255,255,255,0.04);
+  background:var(--ink2);padding:14px 0;
+  border-top:1px solid rgba(255,255,255,0.06);
+  position:relative;
 }
-.marquee-divider.light{background:var(--cream3);border-top:1px solid var(--border);}
+.marquee-divider.light{
+  background:var(--cream2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+/* Category label — fixed left edge */
+.mq-label{
+  position:absolute;left:0;top:0;bottom:0;
+  z-index:3;
+  display:flex;align-items:center;
+  padding:0 16px 0 clamp(24px,5vw,80px);
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.52rem;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  white-space:nowrap;
+}
+/* Dark marquee label */
+.marquee-divider:not(.light) .mq-label{
+  background:linear-gradient(to right,var(--ink2) 70%,transparent);
+  color:#4DC9A8;
+}
+/* Light marquee label */
+.marquee-divider.light .mq-label{
+  background:linear-gradient(to right,var(--cream2) 70%,transparent);
+  color:var(--forest);
+}
+
 .mtrack{
-  display:flex;gap:32px;
+  display:flex;gap:20px;
   width:max-content;
-  animation:mq 20s linear infinite;
+  animation:mq 25s linear infinite;
+  padding-left:140px; /* clear the label */
 }
 .mtrack.rev{animation-direction:reverse;}
 @keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* Shared word styles */
 .mword{
-  font-family:'Fraunces',serif;
-  font-size:0.72rem;font-weight:400;
-  font-style:italic;
-  letter-spacing:0.04em;
-  color:rgba(255,255,255,0.15);
+  font-family:'DM Sans',sans-serif;
+  font-size:0.72rem;font-weight:500;
+  letter-spacing:0.02em;
   white-space:nowrap;flex-shrink:0;
+  padding:4px 12px;
+  border-radius:100px;
+  transition:opacity 0.2s;
 }
-.marquee-divider.light .mword{color:rgba(14,27,18,0.2);}
-.msep{color:var(--forest);opacity:0.4;flex-shrink:0;font-size:0.5rem;}
+/* Dark marquee — skills as ghost pills, certs as solid teal pills */
+.marquee-divider:not(.light) .mword{
+  color:rgba(245,245,240,0.75);
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.marquee-divider:not(.light) .mword.cert{
+  color:#0E1B12;
+  background:#4DC9A8;
+  border-color:#4DC9A8;
+  font-weight:600;
+}
+/* Light marquee — tools as forest-tinted pills */
+.marquee-divider.light .mword{
+  color:var(--ink);
+  background:rgba(13,92,74,0.07);
+  border:1px solid rgba(13,92,74,0.15);
+}
+.marquee-divider.light .mword.ai{
+  color:var(--forest);
+  background:rgba(13,92,74,0.12);
+  border-color:rgba(13,92,74,0.3);
+  font-weight:600;
+}
+.msep{
+  color:var(--forest);opacity:0.3;flex-shrink:0;
+  font-size:0.45rem;display:flex;align-items:center;
+}
+.marquee-divider.light .msep{color:var(--mid);opacity:0.25;}
 
 /* ══════════════════════════════════════
    CAPABILITIES — dark cards grid
@@ -1119,8 +1178,7 @@ footer span{color:rgba(13,92,74,0.6);}
 ══════════════════════════════════════ */
 /* old 1200px dock block removed — smart-dock handles breakpoints */
 
-@media(max-width:860px){
-  .nav-links{display:none;}
+@media(max-width:860px){  .nav-links{display:none;}
   .hbg{display:flex;}
   .nav-cta{display:none;}
   body{padding-bottom:calc(72px + env(safe-area-inset-bottom));}
@@ -1244,6 +1302,11 @@ footer span{color:rgba(13,92,74,0.6);}
 
   /* Keep 2-col at 600px — enough space for 2 cards */
   .proj-card{padding:16px;}
+
+  /* Marquee: smaller label, less padding */
+  .mq-label{padding-left:var(--s2);font-size:0.46rem;}
+  .mtrack{padding-left:100px;}
+  .mword{font-size:0.62rem;padding:3px 8px;}
 }
 
 /* smart-dock is position:fixed with no layout impact — no body padding needed */
@@ -1549,16 +1612,7 @@ footer span{color:rgba(13,92,74,0.6);}
   <button class="hbg" id="hbg" aria-label="Menu" style="display:none"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mob" id="mob">
-  <a href="#about" onclick="closeMob()">About</a>
-  <a href="#capabilities" onclick="closeMob()">Capabilities</a>
-  <a href="#work" onclick="closeMob()">Work</a>
-  <a href="#edge" onclick="closeMob()">My Edge</a>
-  <a href="#awards" onclick="closeMob()">Awards</a>
-  <a href="#testimonials" onclick="closeMob()">Testimonials</a>
-  <a href="#contact" onclick="closeMob()">Contact</a>
-</div>
+
 
 
 
@@ -1623,7 +1677,7 @@ footer span{color:rgba(13,92,74,0.6);}
       Strategist.<br>Builder.<br><em>Dot connector.</em>
     </h1>
     <p class="hero-byline">
-      4+ years at the intersection of <strong>executive strategy and product delivery</strong> — turning ambiguous mandates into structured outcomes, and AI from a buzzword into a daily tool.
+      4+ years at the intersection of <strong>executive strategy and product delivery</strong> — turning ambiguous mandates into structured outcomes and shipping AI inside live enterprise programs.
     </p>
     <div class="hero-chips">
       <span class="hchip accent">AI Product Strategy</span>
@@ -1646,7 +1700,7 @@ footer span{color:rgba(13,92,74,0.6);}
         <div class="hero-stat-lbl">Certifications</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">5×</div>
+        <div class="hero-stat-num">3×</div>
         <div class="hero-stat-lbl">National Finalist</div>
       </div>
     </div>
@@ -1661,14 +1715,15 @@ footer span{color:rgba(13,92,74,0.6);}
   </div>
 </section>
 
-<!-- ABOUT -->
+<!-- SECTION 1: ABOUT -->
 <section id="about" class="about-s">
   <span class="ey">01 — The person behind the work</span>
-  <h2 class="sh2">Where structure<br>meets <em>curiosity.</em></h2>
+  <h2 class="sh2">Where chaos<br>becomes <em>clarity.</em></h2>
   <div class="about-grid">
     <div class="sr">
-      <p class="about-p">I live in the space most people want to hand off — the <strong>messy middle between strategy and execution</strong>. I walk into ambiguous mandates, map the terrain, and make things move. Not as a project manager checking boxes, but as someone who understands the business, the product, and the people all at once.</p>
-      <p class="about-p">At Cognizant, that's meant <strong>working directly with the Chief of Strategy Office</strong> — standardising governance, building dashboards that compress decision time, and tracking commitments until they close. Across six programs and three clients, the pattern is the same: find the friction, remove it, stay until the outcome lands.</p>
+      <p class="about-p" style="background:rgba(77,201,168,0.08);border-left:3px solid #4DC9A8;padding:14px 18px;border-radius:0 8px 8px 0;font-weight:500;color:#F5F5F0;"><strong>4+ years across compliance, IT strategy, and enterprise product delivery.</strong></p>
+      <p class="about-p">I'm the person enterprises call into the room when the mandate is unclear, the stakeholders don't agree, and the deadline is already close. From AI platforms to PSA transformations to CXO dashboards — I own the problem, structure the chaos, and don't leave until it closes.</p>
+      <p class="about-p"><strong>GenAI isn't on my roadmap. It's already in my delivery.</strong></p>
     </div>
     <div class="tl sr d2">
       <div class="tl-row">
@@ -1695,32 +1750,41 @@ footer span{color:rgba(13,92,74,0.6);}
   </div>
 </section>
 
-<!-- MARQUEE DIVIDER 1 -->
+<!-- MARQUEE DIVIDER 1 — Functional Expertise & Certifications -->
 <div class="marquee-divider" aria-hidden="true">
+  <div class="mq-label">Expertise & Certs</div>
   <div class="mtrack">
-    <span class="mword">Strategy</span><span class="msep">✦</span>
-    <span class="mword">Product</span><span class="msep">✦</span>
-    <span class="mword">Artificial Intelligence</span><span class="msep">✦</span>
-    <span class="mword">Delivery</span><span class="msep">✦</span>
-    <span class="mword">Leadership</span><span class="msep">✦</span>
-    <span class="mword">Execution</span><span class="msep">✦</span>
-    <span class="mword">Cognizant</span><span class="msep">✦</span>
-    <span class="mword">CXO Office</span><span class="msep">✦</span>
-    <span class="mword">Strategy</span><span class="msep">✦</span>
-    <span class="mword">Product</span><span class="msep">✦</span>
-    <span class="mword">Artificial Intelligence</span><span class="msep">✦</span>
-    <span class="mword">Delivery</span><span class="msep">✦</span>
-    <span class="mword">Leadership</span><span class="msep">✦</span>
-    <span class="mword">Execution</span><span class="msep">✦</span>
-    <span class="mword">Cognizant</span><span class="msep">✦</span>
-    <span class="mword">CXO Office</span><span class="msep">✦</span>
+    <span class="mword">Product Roadmapping</span><span class="msep">✦</span>
+    <span class="mword">BRD / PRD</span><span class="msep">✦</span>
+    <span class="mword">Stakeholder Management</span><span class="msep">✦</span>
+    <span class="mword cert">Certified Scrum Master</span><span class="msep">✦</span>
+    <span class="mword">GTM Coordination</span><span class="msep">✦</span>
+    <span class="mword">Customer Journey Mapping</span><span class="msep">✦</span>
+    <span class="mword cert">Certified Scrum Product Owner</span><span class="msep">✦</span>
+    <span class="mword">UAT / QA</span><span class="msep">✦</span>
+    <span class="mword cert">AWS Cloud Practitioner</span><span class="msep">✦</span>
+    <span class="mword">Sprint Planning</span><span class="msep">✦</span>
+    <span class="mword cert">Google — Conversational Agents</span><span class="msep">✦</span>
+    <span class="mword">Gap & Trend Analysis</span><span class="msep">✦</span>
+    <span class="mword">Product Roadmapping</span><span class="msep">✦</span>
+    <span class="mword">BRD / PRD</span><span class="msep">✦</span>
+    <span class="mword">Stakeholder Management</span><span class="msep">✦</span>
+    <span class="mword cert">Certified Scrum Master</span><span class="msep">✦</span>
+    <span class="mword">GTM Coordination</span><span class="msep">✦</span>
+    <span class="mword">Customer Journey Mapping</span><span class="msep">✦</span>
+    <span class="mword cert">Certified Scrum Product Owner</span><span class="msep">✦</span>
+    <span class="mword">UAT / QA</span><span class="msep">✦</span>
+    <span class="mword cert">AWS Cloud Practitioner</span><span class="msep">✦</span>
+    <span class="mword">Sprint Planning</span><span class="msep">✦</span>
+    <span class="mword cert">Google — Conversational Agents</span><span class="msep">✦</span>
+    <span class="mword">Gap & Trend Analysis</span><span class="msep">✦</span>
   </div>
 </div>
 
-<!-- CAPABILITIES -->
+<!-- SECTION 2: CAPABILITIES -->
 <section id="capabilities" class="caps-s">
   <span class="ey">02 — What I bring</span>
-  <h2 class="sh2">Five things I'm<br><em>genuinely good at.</em></h2>
+  <h2 class="sh2">Five things I<br><em>actually deliver.</em></h2>
   <div class="caps-grid">
     <div class="cap sr">
       <div class="cap-n">01</div>
@@ -1731,7 +1795,7 @@ footer span{color:rgba(13,92,74,0.6);}
     <div class="cap sr d1">
       <div class="cap-n">02</div>
       <h3>Audience & Market Intelligence</h3>
-      <p>Gap analysis, trend synthesis, executive dashboards. I translate raw data into the one thing it rarely arrives as: a decision-ready point of view.</p>
+      <p>Gap analysis, trend synthesis, executive dashboards. I turn raw data into the one thing it rarely arrives as: a decision-ready point of view.</p>
       <div class="cap-tools"><span class="ct">SQL</span><span class="ct">Trend Analysis</span><span class="ct">Dashboards</span><span class="ct">Market Research</span></div>
     </div>
     <div class="cap sr d2">
@@ -1759,7 +1823,7 @@ footer span{color:rgba(13,92,74,0.6);}
 <section id="work" class="work-s">
   <span class="ey">03 — Selected work</span>
   <h2 class="sh2">What I built<br>at <em>Cognizant.</em></h2>
-  <p class="work-intro">Six programs. One company. Click any card to see what was actually built.</p>
+  <p class="work-intro">Six projects. One company. Tap any card to see what was built.</p>
 
   <div class="proj-grid" id="projGrid">
     <div class="proj-card sr" onclick="toggleProj('p1')" id="card-p1" aria-expanded="false">
@@ -1767,21 +1831,21 @@ footer span{color:rgba(13,92,74,0.6);}
       <div class="proj-title">Event Hub</div>
       <div class="proj-desc">AI-first enterprise platform orchestrating the full lifecycle of CEO, leadership, and HR events across Outlook and Teams.</div>
       <div class="proj-tags"><span class="proj-tag accent">Lead BA / PO</span><span class="proj-tag">GCP</span><span class="proj-tag">Multi-tenant</span><span class="proj-tag">GenAI</span></div>
-      <div class="proj-hint">Click to expand ↓</div>
+      <div class="proj-hint">Tap to expand ↓</div>
     </div>
     <div class="proj-card sr d1" onclick="toggleProj('p2')" id="card-p2" aria-expanded="false">
       <div class="proj-num">02</div>
       <div class="proj-title">Account Dashboard — Smartdesk</div>
       <div class="proj-desc">Executive dashboard giving leadership real-time visibility into account health, delivery metrics, and client relationships.</div>
       <div class="proj-tags"><span class="proj-tag accent">Lead BA</span><span class="proj-tag">Executive Dashboard</span><span class="proj-tag">Smartdesk</span></div>
-      <div class="proj-hint">Click to expand ↓</div>
+      <div class="proj-hint">Tap to expand ↓</div>
     </div>
     <div class="proj-card sr d2" onclick="toggleProj('p3')" id="card-p3" aria-expanded="false">
       <div class="proj-num">03</div>
       <div class="proj-title">CEO Dashboard</div>
       <div class="proj-desc">Conversational AI platform for executive decision-making — natural language queries over finance, HR, innovation, and risk data.</div>
       <div class="proj-tags"><span class="proj-tag accent">GenAI</span><span class="proj-tag">Multi-agent</span><span class="proj-tag">Product Design</span></div>
-      <div class="proj-hint">Click to expand ↓</div>
+      <div class="proj-hint">Tap to expand ↓</div>
     </div>
 
     <div class="proj-expand" id="p1">
@@ -1789,7 +1853,7 @@ footer span{color:rgba(13,92,74,0.6);}
       <div class="proj-expand-head"><h4>Event Hub — AI-First Event Intelligence Platform</h4><button class="proj-expand-close" onclick="closeProj('p1','card-p1')">✕</button></div>
       <div class="proj-expand-body">
         <div class="proj-expand-col"><p>Owned end-to-end BA and product ownership for an AI-enabled enterprise platform orchestrating the full lifecycle of CEO, leadership, L&D, HR, and functional events — built on GCP with multi-tenant architecture.</p><ul><li>Defined business problem, solution vision, and functional scope</li><li>Authored requirements decks, ARB presentations, and future-scope design artifacts</li><li>Designed template-driven event models for structured, comparable data capture</li><li>Led role-based access control design: Organiser, Attendee, Admin, Super Admin</li></ul></div>
-        <div class="proj-expand-col"><ul><li>Collaborated with architects on multi-tenant design and scalability</li><li>Conducted functional walkthroughs, daily status calls, and stakeholder reviews</li><li>Led QA and UAT planning with validation checklists</li></ul><div class="proj-outcome">✅ Single system of record · Leadership-ready insights · Eliminated manual tracking gaps</div></div>
+        <div class="proj-expand-col"><ul><li>Collaborated with architects on multi-tenant design and scalability</li><li>Led QA/UAT planning, stakeholder reviews, and validation checklists — zero defect leakage</li></ul><div class="proj-outcome">✅ Single system of record · Leadership-ready insights · Eliminated manual tracking gaps</div></div>
       
       </div><!-- /.proj-expand-inner -->
     </div>
@@ -1799,7 +1863,7 @@ footer span{color:rgba(13,92,74,0.6);}
       <div class="proj-expand-head"><h4>Account Dashboard — Smartdesk</h4><button class="proj-expand-close" onclick="closeProj('p2','card-p2')">✕</button></div>
       <div class="proj-expand-body">
         <div class="proj-expand-col"><p>Led functional design and stakeholder demonstrations for the Account Dashboard — enabling leadership with a single view of account health, delivery, and client relationships.</p><ul><li>Defined dashboard sections: Account Overview · Client Overview · Delivery · Innovation</li><li>Refined editability and customisation for executive use</li><li>Coordinated with backend and data teams on integration feasibility</li></ul></div>
-        <div class="proj-expand-col"><ul><li>Primary bridge between executive feedback, design, and development</li><li>Ensured data presentation was leadership-ready and action-oriented</li></ul><div class="proj-outcome">✅ Improved executive visibility · Customisable views aligned to leadership needs</div></div>
+        <div class="proj-expand-col"><ul><li>Primary bridge between executive feedback, design, and development</li><li>Shaped data presentation to be action-oriented for leadership reviews</li></ul><div class="proj-outcome">✅ Improved executive visibility · Customisable views aligned to leadership needs</div></div>
       
       </div><!-- /.proj-expand-inner -->
     </div>
@@ -1808,7 +1872,7 @@ footer span{color:rgba(13,92,74,0.6);}
       <div class="proj-expand-inner">
       <div class="proj-expand-head"><h4>CEO Dashboard — Conversational Executive Insights</h4><button class="proj-expand-close" onclick="closeProj('p3','card-p3')">✕</button></div>
       <div class="proj-expand-body">
-        <div class="proj-expand-col"><p>Conceptualised an AI-powered conversational dashboard for executive decision-making — solving fragmented leadership insights and slow decision cycles.</p><ul><li>Defined multi-agent conversational architecture mapping queries to enterprise datasets</li><li>Articulated business value across finance, HR, innovation, and risk domains</li><li>Authored executive-level presentations outlining approach and outcomes</li></ul></div>
+        <div class="proj-expand-col"><p>Designed an AI-powered conversational dashboard for executive decision-making — solving fragmented leadership insights and slow decision cycles.</p><ul><li>Defined multi-agent architecture mapping natural-language queries to enterprise datasets</li><li>Mapped business value across finance, HR, innovation, and risk domains</li><li>Authored executive presentations outlining approach, architecture, and projected outcomes</li></ul></div>
         <div class="proj-expand-col"><ul><li>First to evaluate Gemini and Copilot — recognised by Director for delivery quality</li><li>Provided scalable blueprint for GenAI-driven executive intelligence</li></ul><div class="proj-outcome">✅ Scalable GenAI blueprint · Leadership access to enterprise data via natural language</div></div>
       
       </div><!-- /.proj-expand-inner -->
@@ -1818,31 +1882,31 @@ footer span{color:rgba(13,92,74,0.6);}
     <div class="proj-card sr" onclick="toggleProj('p4')" id="card-p4" aria-expanded="false">
       <div class="proj-num">04</div>
       <div class="proj-title">Risk Module — MSUTILITY</div>
-      <div class="proj-desc">BA and QA governance contributor for an internal utility app — drove testing clarity, defect triaging, and onboarding compliance.</div>
+      <div class="proj-desc">QA governance lead for an internal utility app — owned testing clarity, defect triaging, and onboarding compliance.</div>
       <div class="proj-tags"><span class="proj-tag accent">QA & Governance</span><span class="proj-tag">Risk</span><span class="proj-tag">Internal App</span></div>
-      <div class="proj-hint">Click to expand ↓</div>
+      <div class="proj-hint">Tap to expand ↓</div>
     </div>
     <div class="proj-card sr d1" onclick="toggleProj('p5')" id="card-p5" aria-expanded="false">
       <div class="proj-num">05</div>
       <div class="proj-title">Project IDEAL — Kantata PSA</div>
       <div class="proj-desc">Functional SME for Cognizant's M&A onboarding initiative — migrating acquired entities onto the Kantata PSA platform.</div>
       <div class="proj-tags"><span class="proj-tag accent">Functional SME</span><span class="proj-tag">M&A</span><span class="proj-tag">PSA</span><span class="proj-tag">Data Migration</span></div>
-      <div class="proj-hint">Click to expand ↓</div>
+      <div class="proj-hint">Tap to expand ↓</div>
     </div>
     <div class="proj-card sr d2" onclick="toggleProj('p6')" id="card-p6" aria-expanded="false">
       <div class="proj-num">06</div>
       <div class="proj-title">Bayer Life Sciences — A-SOR Phase 2</div>
       <div class="proj-desc">Client-facing BA for a SharePoint Online migration at Bayer — requirements gathering, UAT, key-user training, and go-live support.</div>
       <div class="proj-tags"><span class="proj-tag accent">Client Engagement</span><span class="proj-tag">Bayer</span><span class="proj-tag">UAT</span><span class="proj-tag">Migration</span></div>
-      <div class="proj-hint">Click to expand ↓</div>
+      <div class="proj-hint">Tap to expand ↓</div>
     </div>
 
     <div class="proj-expand" id="p4">
       <div class="proj-expand-inner">
       <div class="proj-expand-head"><h4>Risk Module — MSUTILITY</h4><button class="proj-expand-close" onclick="closeProj('p4','card-p4')">✕</button></div>
       <div class="proj-expand-body">
-        <div class="proj-expand-col"><p>BA and QA governance lead for the Risk Module of an internal utility application — supporting testing readiness, defect triaging, and governance compliance.</p><ul><li>Participated in stand-ups and functional review discussions</li><li>Supported prompt validation and defect triaging</li><li>Created app registration and approval checklists</li></ul></div>
-        <div class="proj-expand-col"><ul><li>Coordinated with cross-functional teams for governance compliance</li><li>Reduced functional ambiguity across testing cycles</li></ul><div class="proj-outcome">✅ Improved testing clarity · Strengthened application governance readiness</div></div>
+        <div class="proj-expand-col"><p>BA and QA governance lead for the Risk Module of an internal utility application — driving testing readiness, defect triaging, and governance compliance.</p><ul><li>Created app registration and approval checklists adopted across teams</li><li>Owned prompt validation and defect triaging workflows</li></ul></div>
+        <div class="proj-expand-col"><ul><li>Coordinated cross-functional teams for governance compliance</li><li>Reduced functional ambiguity across testing cycles</li></ul><div class="proj-outcome">✅ Improved testing clarity · Strengthened application governance readiness</div></div>
       
       </div><!-- /.proj-expand-inner -->
     </div>
@@ -1852,7 +1916,7 @@ footer span{color:rgba(13,92,74,0.6);}
       <div class="proj-expand-head"><h4>Project IDEAL — Kantata PSA Transformation</h4><button class="proj-expand-close" onclick="closeProj('p5','card-p5')">✕</button></div>
       <div class="proj-expand-body">
         <div class="proj-expand-col"><p>Functional SME for Cognizant's initiative to onboard acquired entities onto Kantata PSA as part of M&A integration.</p><ul><li>Collected, analysed, and validated BRDs for Financials, Invoices, Contracts, Rate Sets, and Timesheet integrations</li><li>Mapped data from source systems to Kantata objects</li><li>Supported SIT, data migration, and defect triaging</li></ul></div>
-        <div class="proj-expand-col"><ul><li>Acted as functional liaison with delivery and technical teams</li><li>Delivered knowledge transfer to L1 support post-implementation</li></ul><div class="proj-outcome">✅ Smooth PSA onboarding · Improved accuracy of project financials and time tracking</div></div>
+        <div class="proj-expand-col"><ul><li>Functional liaison between delivery and technical teams throughout migration</li><li>Delivered knowledge transfer to L1 support post-implementation</li></ul><div class="proj-outcome">✅ Smooth PSA onboarding · Improved accuracy of project financials and time tracking</div></div>
       
       </div><!-- /.proj-expand-inner -->
     </div>
@@ -1861,7 +1925,7 @@ footer span{color:rgba(13,92,74,0.6);}
       <div class="proj-expand-inner">
       <div class="proj-expand-head"><h4>Bayer Life Sciences — A-SOR Phase 2</h4><button class="proj-expand-close" onclick="closeProj('p6','card-p6')">✕</button></div>
       <div class="proj-expand-body">
-        <div class="proj-expand-col"><p>Client-facing BA for Bayer's SharePoint Online migration — requirements gathering, UAT, key-user training, and go-live documentation.</p><ul><li>Conducted requirements gathering workshops with client stakeholders</li><li>Demonstrated product functionality and delivered key-user training</li><li>Supported requirements finalisation, UAT, and migration phases</li></ul></div>
+        <div class="proj-expand-col"><p>Client-facing BA for Bayer's SharePoint Online migration — requirements gathering, UAT, key-user training, and go-live documentation.</p><ul><li>Led requirements gathering workshops with client stakeholders</li><li>Demonstrated product functionality and delivered key-user training</li><li>Drove requirements finalisation, UAT execution, and migration sign-off</li></ul></div>
         <div class="proj-expand-col"><ul><li>Developed inventory templates, FAQs, user guides, and UAT artifacts</li><li>Liaison between business users and technical teams during migration</li></ul><div class="proj-outcome">✅ Smooth SharePoint migration · Improved user adoption and UAT confidence</div></div>
       
       </div><!-- /.proj-expand-inner -->
@@ -1870,23 +1934,30 @@ footer span{color:rgba(13,92,74,0.6);}
   </div>
 </section>
 
-<!-- MARQUEE DIVIDER 2 -->
+<!-- MARQUEE DIVIDER 2 — Tools & Stack -->
 <div class="marquee-divider light" aria-hidden="true">
+  <div class="mq-label">Tools & Stack</div>
   <div class="mtrack rev">
-    <span class="mword">4+ Years</span><span class="msep">·</span>
-    <span class="mword">Cognizant CXO Office</span><span class="msep">·</span>
-    <span class="mword">6 Programs</span><span class="msep">·</span>
-    <span class="mword">GenAI</span><span class="msep">·</span>
-    <span class="mword">Bengaluru</span><span class="msep">·</span>
-    <span class="mword">MBA — XIMB</span><span class="msep">·</span>
-    <span class="mword">CSM · CSPO · AWS</span><span class="msep">·</span>
-    <span class="mword">4+ Years</span><span class="msep">·</span>
-    <span class="mword">Cognizant CXO Office</span><span class="msep">·</span>
-    <span class="mword">6 Programs</span><span class="msep">·</span>
-    <span class="mword">GenAI</span><span class="msep">·</span>
-    <span class="mword">Bengaluru</span><span class="msep">·</span>
-    <span class="mword">MBA — XIMB</span><span class="msep">·</span>
-    <span class="mword">CSM · CSPO · AWS</span><span class="msep">·</span>
+    <span class="mword">JIRA</span><span class="msep">·</span>
+    <span class="mword">SQL</span><span class="msep">·</span>
+    <span class="mword">Figma</span><span class="msep">·</span>
+    <span class="mword">Miro</span><span class="msep">·</span>
+    <span class="mword ai">Google Vertex AI</span><span class="msep">·</span>
+    <span class="mword ai">Azure OpenAI</span><span class="msep">·</span>
+    <span class="mword ai">Copilot</span><span class="msep">·</span>
+    <span class="mword">ServiceNow</span><span class="msep">·</span>
+    <span class="mword">AWS</span><span class="msep">·</span>
+    <span class="mword">Agile / Scrum</span><span class="msep">·</span>
+    <span class="mword">JIRA</span><span class="msep">·</span>
+    <span class="mword">SQL</span><span class="msep">·</span>
+    <span class="mword">Figma</span><span class="msep">·</span>
+    <span class="mword">Miro</span><span class="msep">·</span>
+    <span class="mword ai">Google Vertex AI</span><span class="msep">·</span>
+    <span class="mword ai">Azure OpenAI</span><span class="msep">·</span>
+    <span class="mword ai">Copilot</span><span class="msep">·</span>
+    <span class="mword">ServiceNow</span><span class="msep">·</span>
+    <span class="mword">AWS</span><span class="msep">·</span>
+    <span class="mword">Agile / Scrum</span><span class="msep">·</span>
   </div>
 </div>
 
@@ -1894,14 +1965,14 @@ footer span{color:rgba(13,92,74,0.6);}
 <section id="edge" class="section edge-s">
   <span class="ey">04 — What makes me, me</span>
   <h2 class="sh2">Six things people<br><em>notice first.</em></h2>
-  <p class="edge-intro sr">Not a list of adjectives — six patterns that consistently show up in how I work, whether someone's a colleague, a client, or a collaborator.</p>
+  <p class="edge-intro sr">Not adjectives — six patterns that consistently show up in how I work, whether you're a colleague, a client, or a collaborator.</p>
   <div class="edge-grid">
     <div class="ec sr"><div class="ec-n">01</div><h4>Ambiguity → Clarity</h4><p>I take unclear mandates and return structured, executable plans. The chaotic early-stage is where I'm most useful — I've done this directly for the Chief of Strategy Office.</p></div>
     <div class="ec sr d1"><div class="ec-n">02</div><h4>The Translator</h4><p>Engineering, ops, and business speak different languages. I'm fluent in all three — keeping everyone aligned without losing any team's priorities or trust.</p></div>
-    <div class="ec sr d2"><div class="ec-n">03</div><h4>AI Fluency</h4><p>Not AI-curious — AI-operational. I've shipped work using GenAI inside live enterprise programs. The gap between someone who talks about AI and someone who delivers with it.</p></div>
+    <div class="ec sr d2"><div class="ec-n">03</div><h4>AI Fluency</h4><p>Not AI-curious — AI-operational. I've shipped work using Vertex AI, Azure OpenAI, and Copilot inside live enterprise programs, not sandboxes.</p></div>
     <div class="ec sr"><div class="ec-n">04</div><h4>Audience-First</h4><p>Every dashboard, brief, or product I build starts with one question: who has to act on this? I design for the decision-maker, not the data source.</p></div>
     <div class="ec sr d1"><div class="ec-n">05</div><h4>Relentless Closure</h4><p>Ideas die in execution. I'm the follow-through force — tracking commitments, connecting teams, and ensuring agreed actions close. Consistently, every time.</p></div>
-    <div class="ec sr d2"><div class="ec-n">06</div><h4>Competitive Hunger</h4><p>Five national-level competition finals. I bring the same preparation and drive into every project I'm trusted with — regardless of the stakes on paper.</p></div>
+    <div class="ec sr d2"><div class="ec-n">06</div><h4>Competitive Hunger</h4><p>Three national-level competition finals. I bring the same preparation and drive into every project I'm trusted with — regardless of the stakes on paper.</p></div>
   </div>
 </section>
 
@@ -1914,7 +1985,7 @@ footer span{color:rgba(13,92,74,0.6);}
     <div class="aw sr d1"><div class="aw-ic">🌟</div><h4>Cheers Recognition — Amber Award</h4><p>Recognised by Director Nalini Sampath Kumar for creating conditions for everyone to thrive — BA excellence on Project IDEAL.</p><div class="aw-org">Cognizant · Nov 2023</div></div>
     <div class="aw sr d2"><div class="aw-ic">📝</div><h4>Chakravyuh Finalist</h4><p>Strategic business writing — DSE's national inter-college competition.</p><div class="aw-org">DSE · Chakravyuh</div></div>
     <div class="aw sr d3"><div class="aw-ic">🌱</div><h4>Kartavya Finalist</h4><p>Sustainability strategy — IIM Raipur's national case study competition.</p><div class="aw-org">IIM Raipur · Kartavya</div></div>
-    <div class="aw aw-5 sr d4"><div class="aw-ic">🍫</div><h4>Campus Qualifier</h4><p>New Product Launch — Healthy Snacking business case.</p><div class="aw-org">Mondelez Maestros</div></div>
+    <div class="aw aw-5 sr d4"><div class="aw-ic">🍫</div><h4>Mondelez Maestros — Campus Qualifier</h4><p>Business case on new product launch strategy for healthy snacking category.</p><div class="aw-org">Mondelez International</div></div>
   </div>
 </section>
 
@@ -1944,9 +2015,9 @@ footer span{color:rgba(13,92,74,0.6);}
 <!-- CONTACT -->
 <section id="contact" class="contact-s">
   <div class="sr">
-    <span class="ey">07 — Let's talk</span>
+    <span class="ey">07 — Get in touch</span>
     <h2 class="sh2" style="margin-bottom:var(--s3);">Let's build<br>something <em>together.</em></h2>
-    <p class="c-intro">If you're building something that needs strategic clarity, product thinking, or someone who bridges the room — I'd like to hear about it.</p>
+    <p class="c-intro">If you need someone who bridges strategy and execution — let's talk.</p>
     <a href="/cdn-cgi/l/email-protection#4733263726343e26693726333329262e2c07242820292e3d2629336924282a" class="crow">
       <span class="crow-i">✉️</span>
       <div class="crow-t"><span class="crow-lbl">Email</span><span class="crow-val"><span class="__cf_email__" data-cfemail="7c081d0c1d0f051d520c1d0808121d15173c1f131b1215061d1208521f1311">[email&#160;protected]</span></span></div>
@@ -1967,13 +2038,12 @@ footer span{color:rgba(13,92,74,0.6);}
   <div class="c-avail sr d2">
     <div class="c-avail-status"><span class="c-avail-dot"></span>Open to the right opportunity</div>
     <h3>Currently open to<br><em>the right role.</em></h3>
-    <p>Roles in product strategy, AI product management, and senior business analysis at companies building things that matter. Especially interested in creative tech, entertainment, and AI-first products.</p>
+    <p>Roles in product strategy, AI product management, and senior business analysis — at companies building things that matter.</p>
     <div class="c-tags">
       <span class="c-tag">Product Strategy</span>
       <span class="c-tag">AI Product Management</span>
       <span class="c-tag">Senior BA</span>
-      <span class="c-tag">Creative Tech</span>
-      <span class="c-tag">Entertainment</span>
+      <span class="c-tag">Enterprise AI</span>
     </div>
   </div>
 </section>
@@ -2367,6 +2437,7 @@ function sdShowToast(msg, dur) {
   sections.forEach(function(s){ observer.observe(s); });
   setActive('hero');
 })();
+
 
 </script>
 </body>
