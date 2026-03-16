@@ -617,25 +617,38 @@ body::before{
   font-family:'Fraunces',serif;
 }
 .proj-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:rgba(255,255,255,0.05);
+  display:grid;
+  /* Fixed 3 cols desktop — predictable, no orphan cards */
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.05);
-  border-radius:16px;overflow:visible;
+  border-radius:16px;
+  overflow:visible;
+  width:100%;
+  box-sizing:border-box;
 }
 .proj-card{
   background:var(--ink2);
-  padding:var(--s4);
+  padding:20px 20px 18px;
   cursor:pointer;
-  display:flex;flex-direction:column;gap:var(--s2);
+  display:flex;flex-direction:column;gap:8px;
   position:relative;overflow:hidden;
   user-select:none;
-  -webkit-tap-highlight-color:transparent;  /* remove grey flash on iOS */
-  touch-action:manipulation;               /* no 300ms delay on mobile */
-  transition:background 0.15s ease;        /* faster feedback */
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  transition:background 0.15s ease;
   border:none;border-radius:0;
   -webkit-user-select:none;
+  min-width:0;
+  box-sizing:border-box;
+  /* All cards in a row stretch to same height */
+  /* Tags + hint pushed to bottom via margin-top:auto on tags */
 }
 /* First row corners */
+  min-width:0;
+  box-sizing:border-box;
+
 .proj-card:first-child{border-radius:16px 0 0 0;}
 .proj-card:nth-child(3){border-radius:0 16px 0 0;}
 .proj-card:last-of-type{border-radius:0 0 16px 0;}
@@ -654,10 +667,11 @@ body::before{
 .proj-card:hover::after,.proj-card.active::after{transform:scaleX(1);}
 .proj-num{
   font-family:'Fraunces',serif;
-  font-size:2.2rem;font-weight:600;font-style:italic;
-  color:rgba(255,255,255,0.06);line-height:1;
+  font-size:1.4rem;font-weight:600;font-style:italic;
+  color:rgba(255,255,255,0.08);line-height:1;
   letter-spacing:-0.03em;
   transition:color 0.2s;
+  margin-bottom:2px;
 }
 .proj-card:hover .proj-num{color:rgba(13,92,74,0.25);}
 .proj-title{
@@ -666,13 +680,13 @@ body::before{
   letter-spacing:-0.01em;
 }
 .proj-desc{
-  font-size:0.75rem;line-height:1.65;
+  font-size:0.75rem;line-height:1.6;
   color:rgba(245,245,240,0.4);
-  flex:1;
+  flex:1;  /* grows to fill, pushes tags to bottom — uniform cards */
 }
 .proj-tags{
   display:flex;flex-wrap:wrap;gap:4px;
-  margin-top:auto;padding-top:var(--s2);
+  margin-top:auto;padding-top:10px;
   border-top:0.5px solid rgba(255,255,255,0.06);
 }
 .proj-tag{
@@ -690,10 +704,10 @@ body::before{
   border-color:rgba(13,92,74,0.25);
 }
 .proj-hint{
-  font-size:0.62rem;color:rgba(255,255,255,0.18);
+  font-size:0.58rem;color:rgba(255,255,255,0.18);
   font-family:'JetBrains Mono',monospace;
   letter-spacing:0.06em;
-  margin-top:4px;
+  margin-top:2px;
   transition:color 0.2s;
 }
 .proj-card:hover .proj-hint{color:rgba(77,201,168,0.6);}
@@ -1103,11 +1117,7 @@ footer span{color:rgba(13,92,74,0.6);}
 /* ══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════ */
-@media(max-width:1200px){
-  .right-rail{display:none;}
-  .action-dock{display:none;}
-  body{padding-right:0!important;}
-}
+/* old 1200px dock block removed — smart-dock handles breakpoints */
 
 @media(max-width:860px){
   .nav-links{display:none;}
@@ -1147,7 +1157,7 @@ footer span{color:rgba(13,92,74,0.6);}
 
   .about-grid{grid-template-columns:1fr;gap:var(--s6);}
   .caps-grid{grid-template-columns:1fr 1fr!important;}
-  .proj-grid{grid-template-columns:1fr 1fr!important;}
+  /* proj-grid uses autofit — no override needed */
   .proj-expand{border-radius:0;}
   .proj-expand-inner{padding:var(--s4) var(--s3);}
   .proj-expand-body{grid-template-columns:1fr;gap:var(--s3);}
@@ -1198,11 +1208,24 @@ footer span{color:rgba(13,92,74,0.6);}
     transform:translateX(-50%) translateY(6px);
   }
   .dock-toast.show{transform:translateX(-50%) translateY(0);}
+
+  /* Work: 2-col grid on mobile */
+  .proj-grid{grid-template-columns:1fr 1fr;}
+  /* Hide closed expand panels — they create ghost rows on 2-col grid */
+  .proj-expand:not(.open){display:none;}
+  /* Open panel spans both columns */
+  .proj-expand.open{display:block;grid-column:1/-1;}
+
+  /* Card sizing for 2-col mobile */
+  .proj-card{padding:16px 14px 14px;}
+  .proj-title{font-size:0.85rem;}
+  .proj-desc{font-size:0.72rem;}
+  .proj-num{font-size:1.1rem;}
 }
 
 @media(max-width:600px){
   .caps-grid{grid-template-columns:1fr!important;}
-  .proj-grid{grid-template-columns:1fr!important;}
+  /* proj-grid autofit stacks to 1col naturally on small screens */
   .proj-card{padding:var(--s3);}
   .proj-expand-inner{padding:var(--s3) var(--s2);}
   .edge-grid{grid-template-columns:1fr;}
@@ -1218,9 +1241,289 @@ footer span{color:rgba(13,92,74,0.6);}
   .section{padding:clamp(48px,8vw,64px) var(--s3);}
   .about-s,.caps-s,.work-s,.testimonials-s{padding:clamp(48px,8vw,64px) var(--s3);}
   .awards-s,.edge-s,.contact-s{padding:clamp(48px,8vw,64px) var(--s3);}
+
+  /* Keep 2-col at 600px — enough space for 2 cards */
+  .proj-card{padding:16px;}
 }
 
-@media(min-width:901px){body{padding-right:148px;}}
+/* smart-dock is position:fixed with no layout impact — no body padding needed */
+/* ═══════════════════════════════════════════════════════
+   SMART-DOCK — floating icon nav, left-side vertical
+   Desktop: left:16px, vertical column of floating icons
+   Mobile:  bottom-center horizontal pill
+   Classes match HTML: .sd-nav-btn / .sd-action-btn
+═══════════════════════════════════════════════════════ */
+
+/* Hide legacy dock elements */
+.right-rail  { display: none !important; }
+.action-dock { display: none !important; }
+.dock-toast  { display: none !important; }
+
+/* ── WRAPPER: invisible — no tray, no background ── */
+.smart-dock {
+  position: fixed;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  width: auto;
+  /* Transparent wrapper — clicks pass through gaps between buttons */
+  pointer-events: none;
+}
+
+.smart-dock-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.smart-dock-divider {
+  width: 20px;
+  height: 1px;
+  background: rgba(14, 27, 18, 0.13);
+  margin: 3px 0;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.smart-dock-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+/* ── SHARED BUTTON STYLES ── */
+/* Both nav and action buttons use glassmorphism on the icon itself */
+.sd-nav-btn,
+.sd-action-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Glassmorphism on the button itself — no container */
+  background: rgba(250, 250, 247, 0.60);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(14, 27, 18, 0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+  cursor: pointer;
+  color: rgba(74, 90, 79, 0.55);
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.2s cubic-bezier(.22, 1, .36, 1);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  /* Re-enable pointer events on the button itself */
+  pointer-events: all;
+}
+
+.sd-nav-btn svg,
+.sd-action-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.7;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Hover state */
+.sd-nav-btn:hover,
+.sd-action-btn:hover {
+  color: var(--forest);
+  background: rgba(13, 92, 74, 0.10);
+  border-color: rgba(13, 92, 74, 0.28);
+  box-shadow: 0 2px 14px rgba(13, 92, 74, 0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+  transform: scale(1.1) translateX(2px);
+}
+
+/* Press */
+.sd-action-btn:active {
+  transform: scale(0.92);
+  transition-duration: 0.06s;
+}
+
+/* Scroll-spy active */
+.sd-nav-btn.sd-active {
+  color: var(--forest);
+  background: rgba(13, 92, 74, 0.13);
+  border-color: rgba(13, 92, 74, 0.32);
+  box-shadow: 0 2px 14px rgba(13, 92, 74, 0.2), inset 0 1px 0 rgba(255,255,255,0.7);
+  transform: scale(1.1);
+}
+.sd-nav-btn.sd-active svg {
+  stroke-width: 2.2;
+}
+
+/* Success (copy etc.) */
+.sd-action-btn.sd-success {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.10);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+/* ── TOOLTIP — appears RIGHT of the left-side dock ── */
+.sd-tooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  z-index: 10;
+}
+/* Arrow pointing left toward the dock */
+.sd-tooltip::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-right-color: var(--ink);
+}
+.sd-nav-btn:hover .sd-tooltip,
+.sd-action-btn:hover .sd-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ── TOAST ── */
+.sd-toast {
+  position: fixed;
+  left: 72px;
+  bottom: 24px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 100px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+  z-index: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(14, 27, 18, 0.14);
+}
+.sd-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── DESKTOP: only show above 900px ── */
+@media (max-width: 900px) {
+  .smart-dock { display: none; }
+}
+
+/* ── MOBILE: bottom-center horizontal pill ── */
+
+/* Desktop: push content right to clear the left dock (68px) */
+@media (min-width: 901px) {
+  body { padding-left: 72px; }
+}
+
+
+/* ── MOBILE NAV — icon jump links + download CV ── */
+/* Hidden on desktop, visible on mobile only */
+.mob-nav-right {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+.mob-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  color: var(--mid);
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.mob-icon-btn svg {
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+.mob-icon-btn:hover, .mob-icon-btn:active {
+  color: var(--forest);
+  background: var(--forest-light);
+}
+.mob-dl-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.mob-dl-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.mob-dl-btn:hover { background: var(--forest); }
+
+@media (max-width: 860px) {
+  .mob-nav-right { display: flex; }
+  .hbg           { display: none !important; }
+  .mob           { display: none !important; visibility: hidden !important; }
+  /* No body padding-bottom from mobile menu */
+}
+
+/* Very small phones: 1-col work grid */
+@media(max-width:400px){
+  .proj-grid{grid-template-columns:1fr !important;}
+}
+
 </style>
 </head>
 <body>
@@ -1228,14 +1531,22 @@ footer span{color:rgba(13,92,74,0.6);}
 <!-- NAV -->
 <nav class="nav" id="topnav">
   <div class="nav-logo">Tapasya <em>Pattnaik</em></div>
-  <div class="nav-links">
-    <a href="#about" class="nav-link">About</a>
-    <a href="#capabilities" class="nav-link">Capabilities</a>
-    <a href="#work" class="nav-link">Work</a>
-    <a href="#contact" class="nav-link">Contact</a>
-    <a href="https://www.linkedin.com/in/tapasya-pattnaik/" target="_blank" class="nav-cta">Say Hello ↗</a>
+
+  <!-- Desktop nav links removed -->
+
+  <!-- Mobile-only right side: icon nav + download -->
+  <div class="mob-nav-right">
+    <a href="#about"        class="mob-icon-btn" aria-label="About"    onclick="sdScrollTo('about')">&nbsp;<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+    <a href="#work"         class="mob-icon-btn" aria-label="Work"     onclick="sdScrollTo('work')">&nbsp;<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></a>
+    <a href="#contact"      class="mob-icon-btn" aria-label="Contact"  onclick="sdScrollTo('contact')">&nbsp;<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+    <button class="mob-dl-btn" onclick="exportResume()" aria-label="Download CV">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      CV
+    </button>
   </div>
-  <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+
+  <!-- Hamburger: hidden (replaced by icon nav) -->
+  <button class="hbg" id="hbg" aria-label="Menu" style="display:none"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- MOBILE MENU -->
@@ -1249,48 +1560,60 @@ footer span{color:rgba(13,92,74,0.6);}
   <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
-<!-- VERTICAL NAV -->
-<div class="right-rail" id="rightRail">
-  <nav class="vnav" id="vnav">
-    <div class="vn" data-s="hero"><span class="vn-lbl">Top</span></div>
-    <div class="vn" data-s="about"><span class="vn-lbl">About</span></div>
-    <div class="vn" data-s="capabilities"><span class="vn-lbl">Capabilities</span></div>
-    <div class="vn" data-s="work"><span class="vn-lbl">Work</span></div>
-    <div class="vn" data-s="edge"><span class="vn-lbl">My Edge</span></div>
-    <div class="vn" data-s="awards"><span class="vn-lbl">Awards</span></div>
-    <div class="vn" data-s="testimonials"><span class="vn-lbl">Testimonials</span></div>
-    <div class="vn" data-s="contact"><span class="vn-lbl">Contact</span></div>
-  </nav>
-</div>
 
-<!-- ACTION DOCK -->
-<div class="action-dock" id="actionDock" role="toolbar" aria-label="Quick actions">
-  <div class="dock-item" data-label="Get in Touch">
-    <button class="dock-btn" id="dockContact" aria-label="Get in Touch" onclick="scrollTo('contact')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+
+
+<!-- SMART-DOCK — floating icons, scroll-spy, consolidated actions -->
+<div class="smart-dock" id="smartDock" role="navigation" aria-label="Page navigation">
+
+  <!-- Section nav (desktop only) -->
+  <div class="smart-dock-nav" id="sdNav">
+    <button class="sd-nav-btn" data-target="hero" aria-label="Top" onclick="sdScrollTo('hero')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="sd-tooltip">Top</span>
     </button>
-    <div class="dock-tooltip">Get in Touch</div>
-  </div>
-  <div class="dock-item" data-label="See Work">
-    <button class="dock-btn" id="dockWork" aria-label="See My Work" onclick="scrollTo('work')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+    <button class="sd-nav-btn" data-target="about" aria-label="About" onclick="sdScrollTo('about')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="sd-tooltip">About</span>
     </button>
-    <div class="dock-tooltip">See Work</div>
-  </div>
-  <div class="dock-item" data-label="Resume">
-    <button class="dock-btn" id="dockExport" aria-label="Export Resume" onclick="exportResume()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+    <button class="sd-nav-btn" data-target="capabilities" aria-label="Capabilities" onclick="sdScrollTo('capabilities')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span class="sd-tooltip">Capabilities</span>
     </button>
-    <div class="dock-tooltip">Export Resume</div>
-  </div>
-  <div class="dock-item" data-label="Copy Link">
-    <button class="dock-btn" id="dockCopy" aria-label="Copy link" onclick="copyLink()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+    <button class="sd-nav-btn" data-target="work" aria-label="Work" onclick="sdScrollTo('work')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+      <span class="sd-tooltip">Work</span>
     </button>
-    <div class="dock-tooltip">Copy Link</div>
+    <button class="sd-nav-btn" data-target="edge" aria-label="My Edge" onclick="sdScrollTo('edge')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span class="sd-tooltip">My Edge</span>
+    </button>
+    <button class="sd-nav-btn" data-target="awards" aria-label="Awards" onclick="sdScrollTo('awards')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      <span class="sd-tooltip">Awards</span>
+    </button>
+    <button class="sd-nav-btn" data-target="testimonials" aria-label="Testimonials" onclick="sdScrollTo('testimonials')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span class="sd-tooltip">Testimonials</span>
+    </button>
+    <button class="sd-nav-btn" data-target="contact" aria-label="Contact" onclick="sdScrollTo('contact')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span class="sd-tooltip">Contact</span>
+    </button>
   </div>
+
+  <div class="smart-dock-divider"></div>
+
+  <!-- Quick actions —  3 consolidated icons -->
+  <div class="smart-dock-actions">
+    <button class="sd-action-btn" id="sdExport" aria-label="Export Resume" onclick="exportResume()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span class="sd-tooltip">Resume</span>
+    </button>
+  </div>
+
 </div>
-<div class="dock-toast" id="dockToast" role="status" aria-live="polite"></div>
+<div class="sd-toast" id="sdToast" role="status" aria-live="polite"></div>
 
 <!-- HERO -->
 <section class="hero" id="hero">
@@ -1588,7 +1911,7 @@ footer span{color:rgba(13,92,74,0.6);}
   <h2 class="sh2">A few things<br><em>worth mentioning.</em></h2>
   <div class="awards-grid">
     <div class="aw sr"><div class="aw-ic">🏆</div><h4>Best Presentation Award</h4><p>Business Expansion Strategy presented to senior leadership at Yoti.</p><div class="aw-org">Yoti Biometrics · 2019</div></div>
-    <div class="aw sr d1"><div class="aw-ic">🥈</div><h4>Competition Runner-Up</h4><p>GenAI-driven fraud detection solution — internal Cognizant case study.</p><div class="aw-org">Cognizant · 2024</div></div>
+    <div class="aw sr d1"><div class="aw-ic">🌟</div><h4>Cheers Recognition — Amber Award</h4><p>Recognised by Director Nalini Sampath Kumar for creating conditions for everyone to thrive — BA excellence on Project IDEAL.</p><div class="aw-org">Cognizant · Nov 2023</div></div>
     <div class="aw sr d2"><div class="aw-ic">📝</div><h4>Chakravyuh Finalist</h4><p>Strategic business writing — DSE's national inter-college competition.</p><div class="aw-org">DSE · Chakravyuh</div></div>
     <div class="aw sr d3"><div class="aw-ic">🌱</div><h4>Kartavya Finalist</h4><p>Sustainability strategy — IIM Raipur's national case study competition.</p><div class="aw-org">IIM Raipur · Kartavya</div></div>
     <div class="aw aw-5 sr d4"><div class="aw-ic">🍫</div><h4>Campus Qualifier</h4><p>New Product Launch — Healthy Snacking business case.</p><div class="aw-org">Mondelez Maestros</div></div>
@@ -1624,9 +1947,9 @@ footer span{color:rgba(13,92,74,0.6);}
     <span class="ey">07 — Let's talk</span>
     <h2 class="sh2" style="margin-bottom:var(--s3);">Let's build<br>something <em>together.</em></h2>
     <p class="c-intro">If you're building something that needs strategic clarity, product thinking, or someone who bridges the room — I'd like to hear about it.</p>
-    <a href="mailto:tapasya.pattnaik@cognizant.com" class="crow">
+    <a href="/cdn-cgi/l/email-protection#4733263726343e26693726333329262e2c07242820292e3d2629336924282a" class="crow">
       <span class="crow-i">✉️</span>
-      <div class="crow-t"><span class="crow-lbl">Email</span><span class="crow-val">tapasya.pattnaik@cognizant.com</span></div>
+      <div class="crow-t"><span class="crow-lbl">Email</span><span class="crow-val"><span class="__cf_email__" data-cfemail="7c081d0c1d0f051d520c1d0808121d15173c1f131b1215061d1208521f1311">[email&#160;protected]</span></span></div>
       <span class="crow-arr">→</span>
     </a>
     <a href="https://www.linkedin.com/in/tapasya-pattnaik/" target="_blank" class="crow">
@@ -1659,7 +1982,7 @@ footer span{color:rgba(13,92,74,0.6);}
   Tapasya Pattnaik · Strategist · Builder · <span>Dot Connector</span> · Bengaluru, India
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Cursor glow
 window.addEventListener('mousemove',e=>{
   document.documentElement.style.setProperty('--mx',e.clientX+'px');
@@ -1768,6 +2091,8 @@ function toggleProj(id) {
   card.classList.add('active');
   card.setAttribute('aria-expanded', 'true');
   openProj = id;
+  // Ensure display:none is cleared on mobile (CSS :not(.open) hides closed panels)
+  panel.style.display = '';
 
   isAnimating = true;
   requestAnimationFrame(() => {
@@ -1786,7 +2111,7 @@ function closeProj(id, cardId) {
   const c = document.getElementById(cardId);
   if (p) {
     p.classList.remove('open');
-    // On mobile: wait for transition then restore position
+    p.style.display = '';  // let CSS :not(.open) rule handle display:none
     if (isMobile()) {
       setTimeout(() => restorePanel(id), 400);
     }
@@ -1824,39 +2149,225 @@ window.addEventListener('resize', () => {
 }, { passive: true });
 
 // Dock
-function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+function dockScrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
 function showToast(msg,dur=2000){
   const t=document.getElementById('dockToast');
   t.textContent=msg;t.classList.add('show');
   clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);
 }
-function copyLink(){
-  navigator.clipboard.writeText(window.location.href)
-    .then(()=>{document.getElementById('dockCopy').classList.add('success');setTimeout(()=>document.getElementById('dockCopy').classList.remove('success'),1800);showToast('Link copied ✓');})
-    .catch(()=>showToast('Copy failed'));
-}
 function exportResume(){
-  showToast('Preparing resume…');
-  setTimeout(()=>{
-    const w=window.open('','_blank');
-    if(!w)return showToast('Allow popups');
-    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Tapasya Pattnaik — Resume</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:sans-serif;color:#0E1B12;background:#fff;padding:2.5rem 3rem;font-size:13px;line-height:1.6;max-width:800px;margin:0 auto;}h1{font-size:2rem;font-weight:700;letter-spacing:-0.03em;}h1 em{color:#0D5C4A;font-style:normal;}.tag{font-size:0.75rem;color:#4A5A4F;text-transform:uppercase;letter-spacing:0.1em;margin:4px 0 10px;}.cr{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.75rem;color:#4A5A4F;padding-bottom:10px;margin-bottom:16px;border-bottom:2px solid #0E1B12;}.cr a{color:#0D5C4A;text-decoration:none;}.st{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#0D5C4A;margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid #D8D9D2;}.sm{font-size:0.88rem;line-height:1.8;color:#3A4D42;}.ei{margin-bottom:12px;}.eh{display:flex;justify-content:space-between;gap:8px;}.et{font-weight:700;font-size:0.9rem;}.ed{font-size:0.7rem;color:#8A9A8F;white-space:nowrap;}.es{font-size:0.75rem;color:#4A5A4F;margin:2px 0 5px;}ul{padding-left:16px;}ul li{font-size:0.8rem;color:#3A4D42;margin-bottom:3px;}.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}.chip{font-size:0.68rem;background:rgba(13,92,74,0.08);color:#0D5C4A;padding:2px 9px;border-radius:100px;border:1px solid rgba(13,92,74,0.2);}</style></head><body><h1>Tapasya <em>Pattnaik</em></h1><div class="tag">Senior Business Analyst · AI Product Strategist</div><div class="cr"><span>📍 Bengaluru, IN</span><a href="mailto:tapasya.pattnaik@cognizant.com">✉ tapasya.pattnaik@cognizant.com</a><span>📞 +91 79786 09092</span><a href="https://linkedin.com/in/tapasya-pattnaik">💼 LinkedIn</a></div><div class="st">Summary</div><p class="sm">Strategic BA with 4+ years at Cognizant CXO Office — delivering AI-led programs, executive dashboards, and cross-functional governance across enterprise platforms.</p><div class="st">Experience</div><div class="ei"><div class="eh"><span class="et">Senior Business Analyst — Cognizant</span><span class="ed">May 2022–Present</span></div><div class="es">Strategy & Product Management · CXO Office · Bengaluru</div><ul><li>Led structured governance for CXO-level strategic initiatives across 6 programs</li><li>Delivered AI-powered solutions using Vertex AI, Azure OpenAI, and Copilot</li><li>Owned end-to-end BA and PO for Event Hub — GCP multi-tenant AI event platform</li><li>Designed CEO Dashboard conversational AI architecture for executive decisions</li></ul></div><div class="ei"><div class="eh"><span class="et">KYC Analyst — Yoti Biometrics</span><span class="ed">Jan 2019–Jun 2020</span></div><div class="es">AML Compliance · Bengaluru</div><ul><li>Maintained AML policies with 99% accuracy; won Best Presentation Award</li></ul></div><div class="st">Education</div><div class="ei"><div class="eh"><span class="et">MBA — Xavier Institute of Management (XIMB)</span><span class="ed">2020–2022</span></div></div><div class="ei"><div class="eh"><span class="et">B.Tech — CIPET</span><span class="ed">2013–2017</span></div></div><div class="st">Certifications</div><div class="chips"><span class="chip">CSM</span><span class="chip">CSPO</span><span class="chip">AWS Cloud Practitioner</span><span class="chip">Google Conversational Agents</span><span class="chip">Digital Marketing</span><span class="chip">Excel Advanced</span></div><script>window.onload=function(){window.print();}<\/script></body></html>`);
-    w.document.close();
-  },400);
+  showToast('Preparing resume\u2026');
+
+  // Build resume HTML using Blob (no parser issues)
+  var css = [
+    '*{box-sizing:border-box;margin:0;padding:0;}',
+    'body{font-family:sans-serif;color:#1A1A1A;background:#fff;padding:2.5rem 3rem;max-width:820px;margin:0 auto;line-height:1.6;font-size:13px;}',
+    'h1{font-size:1.9rem;font-weight:700;letter-spacing:-0.02em;color:#0E1B12;}',
+    'h1 em{color:#0D5C4A;font-style:normal;}',
+    '.sub{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:#4A5A4F;margin:4px 0 12px;}',
+    '.contacts{display:flex;gap:20px;flex-wrap:wrap;font-size:0.75rem;color:#4A5A4F;padding-bottom:12px;margin-bottom:16px;border-bottom:2px solid #0E1B12;}',
+    '.contacts a{color:#0D5C4A;text-decoration:none;}',
+    '.section-label{font-size:0.6rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#0D5C4A;margin:20px 0 8px;padding-bottom:4px;border-bottom:1px solid #D8D9D2;}',
+    '.section-label:first-of-type{margin-top:0;}',
+    '.body{display:grid;grid-template-columns:1fr 210px;gap:28px;margin-top:14px;}',
+    '.exp{margin-bottom:13px;}',
+    '.exp-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:2px;}',
+    '.exp-role{font-weight:700;font-size:0.88rem;color:#0E1B12;}',
+    '.exp-date{font-size:0.7rem;color:#8A9A8F;white-space:nowrap;}',
+    '.exp-co{font-size:0.78rem;color:#4A5A4F;margin-bottom:4px;}',
+    '.exp-items{padding-left:14px;list-style:disc;}',
+    '.exp-items li{font-size:0.78rem;color:#3A4D42;margin-bottom:2px;line-height:1.5;}',
+    '.skill{display:inline-block;font-size:0.67rem;background:#F3F2EE;color:#3A4D42;padding:2px 7px;border-radius:3px;border:1px solid #E0DDD6;margin:2px 2px 2px 0;}',
+    '.cert{font-size:0.73rem;color:#3A4D42;padding:3px 0;border-bottom:1px solid #F0EDEA;display:flex;align-items:center;gap:5px;}',
+    '.cert::before{content:"✓";color:#0D5C4A;font-weight:700;font-size:0.65rem;}',
+    '.award{font-size:0.72rem;color:#3A4D42;margin-bottom:7px;}',
+    '.award strong{display:block;font-weight:700;font-size:0.73rem;color:#0E1B12;}',
+    '.edu{margin-bottom:9px;}',
+    '.edu-deg{font-weight:700;font-size:0.82rem;color:#0E1B12;}',
+    '.edu-meta{font-size:0.72rem;color:#4A5A4F;margin-top:1px;}',
+    '@media print{body{padding:1.5rem 2rem;}@page{margin:0.8cm;}}'
+  ].join('\n');
+
+  var html = '<!DOCTYPE html>'
+    + '<html lang="en"><head><meta charset="UTF-8"/>'
+    + '<title>Tapasya Pattnaik \u2014 Resume<\/title>'
+    + '<style>' + css + '<\/style><\/head><body>'
+    + '<h1>Tapasya <em>Pattnaik<\/em><\/h1>'
+    + '<div class="sub">Senior Business Analyst \u00b7 AI Product Strategist<\/div>'
+    + '<div class="contacts">'
+    +   '<span>\ud83d\udccd Bengaluru, India<\/span>'
+    +   '<a href="mailto:tapasya.pattnaik@cognizant.com">\u2709 tapasya.pattnaik@cognizant.com<\/a>'
+    +   '<span>\ud83d\udcde +91 79786 09092<\/span>'
+    +   '<a href="https://linkedin.com/in/tapasya-pattnaik">\ud83d\udcbc LinkedIn<\/a>'
+    + '<\/div>'
+    + '<div class="body"><div class="main">'
+    + '<div class="section-label">Summary<\/div>'
+    + '<p style="font-size:0.83rem;line-height:1.75;color:#3A4D42;margin-bottom:14px;">Strategic BA with 4+ years at Cognizant\u2019s CXO Office \u2014 delivering AI-led programs, executive dashboards, and cross-functional governance across enterprise platforms. Certified Scrum Master &amp; Product Owner. Hands-on GenAI fluency across Vertex AI, Azure OpenAI, and Copilot.<\/p>'
+    + '<div class="section-label">Experience<\/div>'
+    + '<div class="exp"><div class="exp-head"><span class="exp-role">Senior Business Analyst<\/span><span class="exp-date">May 2022 \u2013 Present<\/span><\/div>'
+    +   '<div class="exp-co">Cognizant \u00b7 Strategy &amp; Product Management, CXO Office \u00b7 Bengaluru<\/div>'
+    +   '<ul class="exp-items">'
+    +     '<li>Led governance &amp; milestone tracking for 6 CXO-level strategic programs across 3 enterprise clients<\/li>'
+    +     '<li>Owned end-to-end BA &amp; PO for Event Hub \u2014 GCP multi-tenant AI event intelligence platform<\/li>'
+    +     '<li>Designed CEO Dashboard conversational AI architecture (Gemini + Copilot, Director-recognised)<\/li>'
+    +     '<li>Built executive Account Dashboard on Smartdesk \u2014 single view of account health &amp; delivery<\/li>'
+    +     '<li>Functional SME for Project IDEAL \u2014 Kantata PSA M&amp;A onboarding across acquired entities<\/li>'
+    +     '<li>Client-facing BA for Bayer Life Sciences A-SOR Phase 2 SharePoint Online migration<\/li>'
+    +   '<\/ul><\/div>'
+    + '<div class="exp"><div class="exp-head"><span class="exp-role">KYC Analyst<\/span><span class="exp-date">Jan 2019 \u2013 Jun 2020<\/span><\/div>'
+    +   '<div class="exp-co">Yoti Biometrics \u00b7 Bengaluru<\/div>'
+    +   '<ul class="exp-items"><li>AML compliance with 99% accuracy \u00b7 Best Presentation Award<\/li><\/ul><\/div>'
+    + '<div class="section-label">Core Skills<\/div>'
+    + '<div style="margin-bottom:12px;">'
+    +   ['AI Product Strategy','GenAI (Vertex AI, Azure OpenAI, Copilot)','Program Leadership',
+        'Executive Communication','Business Analysis','Requirements Engineering','Agile / Scrum',
+        'JIRA','ServiceNow','Figma','Miro','SQL &amp; Dashboards','UAT / QA']
+      .map(function(s){return '<span class="skill">'+s+'<\/span>';}).join('')
+    + '<\/div>'
+    + '<\/div><div class="sidebar">'
+    + '<div class="section-label">Education<\/div>'
+    + '<div class="edu"><div class="edu-deg">MBA \u2014 Business Management<\/div><div class="edu-meta">XIMB &middot; 2020\u20132022<\/div><\/div>'
+    + '<div class="edu"><div class="edu-deg">B.Tech \u2014 Plastics Engineering<\/div><div class="edu-meta">CIPET &middot; 2013\u20132017<\/div><\/div>'
+    + '<div class="section-label">Certifications<\/div>'
+    + ['Certified Scrum Master (CSM)','Certified Scrum Product Owner (CSPO)',
+       'AWS Cloud Practitioner','Google \u2014 Conversational Agents',
+       'Fundamentals of Digital Marketing','Excel Skills \u2014 Advanced']
+      .map(function(c){return '<div class="cert">'+c+'<\/div>';}).join('')
+    + '<div class="section-label">Recognition<\/div>'
+    + '<div class="award"><strong>Best Presentation<\/strong>Yoti Biometrics &middot; 2019<\/div>'
+    + '<div class="award"><strong>Cheers — Amber Award<\/strong>Cognizant &middot; Nov 2023<\/div>'
+    + '<div class="award"><strong>National Finalist \u00d73<\/strong>DSE Chakravyuh \u00b7 IIM Raipur \u00b7 Mondelez<\/div>'
+    + '<\/div><\/div><\/body><\/html>';
+
+  var blob = new Blob([html], {type:'text/html'});
+  var url  = URL.createObjectURL(blob);
+  var win  = window.open(url, '_blank');
+  if (!win) { sdShowToast('Please allow popups'); URL.revokeObjectURL(url); return; }
+  win.addEventListener('load', function(){ URL.revokeObjectURL(url); });
 }
+
 function positionDock(){
   if(window.innerWidth<=900)return;
-  const rail=document.getElementById('rightRail');
-  const dock=document.getElementById('actionDock');
-  if(!rail||!dock)return;
-  dock.style.zIndex='400';rail.style.zIndex='400';
-  const rb=rail.getBoundingClientRect();
-  const dh=dock.offsetHeight;
-  const vph=window.innerHeight;
-  const top=Math.min(rb.bottom+10,vph-dh-16);
-  dock.style.top=top+'px';
-  dock.style.transform='none';
+  var dock=document.getElementById('smartDock');
+  if(!dock)return;
+  dock.style.zIndex='500';
 }
+
+function showToast(msg,dur){
+  sdShowToast(msg,dur);
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  positionDock();
+  window.addEventListener('resize',positionDock,{passive:true});
+
+  var nav=document.getElementById('topnav');
+  window.addEventListener('scroll',function(){
+    nav.classList.toggle('scrolled',window.scrollY>10);
+  },{passive:true});
+
+  var hbg=document.getElementById('hbg');
+  var mob=document.getElementById('mob');
+  if(hbg&&mob){ hbg.addEventListener('click',function(){ mob.classList.toggle('open'); }); }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); if(mob)mob.classList.remove('open'); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  });
+
+  var secs=document.querySelectorAll('section[id]');
+  var vns=document.querySelectorAll('.vn');
+  document.querySelectorAll('.vn').forEach(function(v){
+    v.addEventListener('click',function(){
+      var t=document.getElementById(v.dataset.s);
+      if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+  function updateVnav(){
+    var cur='hero';
+    secs.forEach(function(s){ if(window.scrollY>=s.offsetTop-100)cur=s.id; });
+    vns.forEach(function(v){ v.classList.toggle('act',v.dataset.s===cur); });
+  }
+  updateVnav();
+  window.addEventListener('scroll',updateVnav,{passive:true});
+
+  window.addEventListener('mousemove',function(e){
+    document.documentElement.style.setProperty('--mx',e.clientX+'px');
+    document.documentElement.style.setProperty('--my',e.clientY+'px');
+  },{passive:true});
+
+  var revEls=document.querySelectorAll('.sr');
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);} });
+  },{threshold:0.07,rootMargin:'0px 0px -24px 0px'});
+  revEls.forEach(function(r){io.observe(r);});
+
+  var expandOriginalNext={};
+  document.querySelectorAll('.proj-expand').forEach(function(panel){
+    expandOriginalNext[panel.id]=panel.nextSibling;
+  });
+  window._expandOriginalNext=expandOriginalNext;
+});
+
+// ── SMART-DOCK functions ──
+function sdScrollTo(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var navH = (document.getElementById('topnav') || {offsetHeight: 64}).offsetHeight;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - navH - 8;
+  // Use scrollBy from current position — never conflicts with any scrollTo override
+  var delta = top - window.pageYOffset;
+  window.scrollBy({ top: delta, behavior: 'smooth' });
+}
+
+function sdShowToast(msg, dur) {
+  var t = document.getElementById('sdToast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.classList.remove('show'); }, dur || 2200);
+}
+
+// Scroll-spy — IntersectionObserver highlights active section icon
+(function initDockSpy() {
+  var btns = document.querySelectorAll('.sd-nav-btn[data-target]');
+  if (!btns.length) return;
+
+  function setActive(id) {
+    btns.forEach(function(b){
+      b.classList.toggle('sd-active', b.getAttribute('data-target') === id);
+    });
+  }
+
+  var sections = [];
+  btns.forEach(function(b){
+    var el = document.getElementById(b.getAttribute('data-target'));
+    if (el) sections.push(el);
+  });
+
+  var ratios = {};
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e){ ratios[e.target.id] = e.intersectionRatio; });
+    var best = null, bestR = -1;
+    Object.keys(ratios).forEach(function(id){
+      if (ratios[id] > bestR) { bestR = ratios[id]; best = id; }
+    });
+    if (bestR < 0.05) {
+      var navH = document.getElementById('topnav') ? document.getElementById('topnav').offsetHeight : 64;
+      sections.forEach(function(s){
+        if (window.scrollY >= s.offsetTop - navH - 60) best = s.id;
+      });
+    }
+    if (best) setActive(best);
+  }, { threshold: [0, 0.05, 0.1, 0.25, 0.5], rootMargin: '-5% 0px -35% 0px' });
+
+  sections.forEach(function(s){ observer.observe(s); });
+  setActive('hero');
+})();
+
 </script>
 </body>
 </html>
